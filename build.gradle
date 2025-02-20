@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'io.github.gleidsonmt'
-version '1.0'
+version '1.0.24'
 
 repositories {
   mavenCentral()
@@ -20,7 +20,7 @@ ext {
 sourceCompatibility = '17'
 targetCompatibility = '17'
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
   options.encoding = 'UTF-8'
 }
 
@@ -40,6 +40,8 @@ dependencies {
 //  implementation project(":core")
 
   implementation fileTree("vendor") { include "*.jar" }
+
+  implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

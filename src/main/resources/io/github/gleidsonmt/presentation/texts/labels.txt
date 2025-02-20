@@ -1,0 +1,9 @@
+[java]
+Label button = new Label("Hello World!");
+        button.setText("Hello");
+[css]
+.button {
+
+}
+[fxml]
+<button>Hello World</button>

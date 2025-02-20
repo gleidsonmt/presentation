@@ -1,0 +1,4 @@
+java: 'Button button = new Button("Button");
+    button.setText("wow");'
+fxml: "My FXML"
+css: "Doe"
