@@ -33,7 +33,6 @@ import org.jetbrains.annotations.ApiStatus;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  17/05/2023
  */
-@ApiStatus.Internal
 @ApiStatus.AvailableSince("1.0")
 public class TreeTitle extends Label {
 

@@ -29,6 +29,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -44,12 +45,11 @@ import java.util.*;
 /**
  * Base class to create imperative presentations.
  * Used to create view without fxml and to fast way to create presentation.
- * It's a top and down blocks. Which blocks represents one method inside
- * this class.
- * Ex. the method title(String title). creates a label, if I put another method
+ * It's a top and down blocks. Which blocks represents one method inside this class.
+ * Ex. The method title(String title). Create a label, if I put another method
  * in sequence two titles will be created in a vbox layout.
  * More: this.title("One").title("Two").build(); creates a vbos with two titles.
- * if I want a text between ones -
+ * If I want a text between ones -
  * this.title("One").text("between").title("Two").build();
  * indented:
  * this.title("One)
@@ -63,8 +63,9 @@ import java.util.*;
  */
 
 @ApiStatus.AvailableSince("1.0")
-@SuppressWarnings("unused")
-public class Presentation
+//@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unchecked", "unused"})
+public class Presentation<T extends PresentationCreator>
         implements PresentationCreator {
 
     //Top and down root
@@ -99,82 +100,82 @@ public class Presentation
      * @param _title the name of the title
      * @return The Presentation.
      */
-    public Presentation title(String _title) {
+    public T title(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "title", "bold", "h1"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h1(String _title) {
+    public T h1(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h1"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h1(String _title, String parent) {
+    public T h1(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h1"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h2(String _title) {
+    public T h2(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h2"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h2(String _title, String parent) {
+    public T h2(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h2"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h3(String _title) {
+    public T h3(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h3"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h3(String _title, String parent) {
+    public T h3(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h3"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h4(String _title) {
+    public T h4(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h4"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h4(String _title, String parent) {
+    public T h4(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h4"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h5(String _title) {
+    public T h5(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h5"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h5(String _title, String parent) {
+    public T h5(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h5"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h6(String _title) {
+    public T h6(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "h6"));
-        return this;
+        return (T) this;
     }
 
-    public Presentation h6(String _title, String parent) {
+    public T h6(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, "h6"));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -184,117 +185,81 @@ public class Presentation
      * @param parent the first parent.
      * @return The Presentation
      */
-    public Presentation title(String _title, String parent) {
+    public T title(String _title, String parent) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, ""));
-        return this;
+        return (T) this;
     }
 
-    public Presentation title(String _title, String parent, String... styles) {
+    public T title(String _title, String parent, String... styles) {
         if (title == null) title = _title;
         items.add(createTitle(_title, parent, styles));
-        return this;
+        return (T) this;
     }
-
-//    public PresentationCreator title(String _title, List<String> styleClass) {
-//        if (title == null) title = _title;
-//        items.add(createTitle(_title, null, styleClass));
-//        return this;
-//    }
-
-//    public PresentationCreator title(String _title, String... styleClass) {
-//        if (title == null) title = _title;
-//        items.add(createTitle(_title, null, List.of(styleClass)));
-//        return this;
-//    }
-
-//    public PresentationCreator title(String _title, String parent, List<String> styleClass) {
-//        if (title == null) title = _title;
-//        items.add(createTitle(_title, parent, styleClass));
-//        return this;
-//    }
 
     @ApiStatus.Experimental
     @Deprecated(forRemoval = true)
-    public Presentation subTitle(String title) {
+    public T subTitle(String title) {
         items.add(createSubTitle(title));
-        return this;
+        return (T) this;
     }
 
     @ApiStatus.Experimental
-    public Presentation subtitle(String title) {
+    public T subtitle(String title) {
         items.add(createSubTitle(title));
-        return this;
+        return (T) this;
     }
 
-    public Presentation text(String text, String... options) {
+    public T text(String text, String... options) {
         items.add(createText(text, options));
-        return this;
+        return (T) this;
     }
 
-    public Presentation text(String text) {
+    public T text(String text) {
         items.add(createText(text));
-        return this;
+        return (T) this;
     }
 
-    public Presentation separator() {
+    public T separator() {
         items.add(createSeparator());
-        return this;
+        return (T) this;
     }
 
-    public Presentation image(Image image) {
+    public T image(Image image) {
         items.add(createImage(image));
-        return this;
+        return (T) this;
     }
 
-
-//    public PresentationCreator textBlock(String text, String view) {
-
-    /// /        TextFlow flow = createText(text);
-    /// /        items.add(flow);
-//        Hyperlink link = new Hyperlink(text);
-//        link.setOnAction(event -> {
-//            try {
-//                context.routes().nav(view);
-//            } catch (NavigationException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//
-//        items.add(link);
-//        return this;
-//    }
-    public Presentation legend(String legend) {
+    /**
+     * The typical text 12.
+     * @param legend The text for legend.
+     * @return This presentation.
+     */
+    public T legend(String legend) {
         items.add(createLabel(legend, "text-12", "text-bold"));
-        return this;
+        return (T) this;
     }
 
-
-
-    public Presentation code(String text) {
+    /**
+     * Creates a block of code with highlight.
+     * @param text The text of code.
+     * @return This Presentation
+     */
+    public T code(String text) {
         items.add(createBlockCode(CodeType.JAVA, text));
-        return this;
+        return (T) this;
     }
 
-    private BlockCode createBlockCode(CodeType codeType, String content) {
-        return new BlockCode()
-                .theme(Theme.GITHUB)
-                .codeType(codeType)
-                .content(content)
-                .build();
-    }
 
-    public Presentation code(String text, String language) {
+    public T code(String text, String language) {
         Optional<CodeType> optional = Arrays.stream(CodeType.values()).filter(el -> el.toString().equalsIgnoreCase(language)).findAny();
         if (optional.isPresent()) {
             items.add(createBlockCode(optional.get(), text));
-            return this;
-        } else {
-            throw new RuntimeException("Language specified doesn't have a match.");
-        }
+            return (T) this;
+        } else throw new RuntimeException("Language specified doesn't have a match.");
     }
 
-    public Presentation youTube(String url, URL resource) {
+    public T youTube(String url, URL resource) {
 
 //        Region region = (Region) createImage(
 //                new Image(resource.toExternalForm())
@@ -355,38 +320,19 @@ public class Presentation
 //        });
 //        items.add(webView);
 //        items.add(button);
-        return this;
+        return (T) this;
     }
 
-//    @ApiStatus.Experimental
-//    public PresentationCreator table(@NotNull TableCreator<?> table) {
-//        VBox.setMargin(table.getRoot(), new Insets(10, 0, 10,0));
-//        items.add(table.getRoot());
-//        return this;
-//    }
+    @ApiStatus.Internal
+    private BlockCode createBlockCode(CodeType codeType, String content) {
+        return new BlockCode()
+                .theme(Theme.GITHUB)
+                .codeType(codeType)
+                .content(content)
+                .build();
+    }
 
-//    @ApiStatus.Experimental
-//    public PresentationCreator options(Option... options) {
-//        items.add(createOptions(options));
-//        return this;
-//    }
-
-//    @ApiStatus.Internal
-//    private TilePane createOptions(Option... options) {
-//        TilePane layout = new TilePane();
-//        layout.setHgap(10);
-//        layout.setVgap(10);
-//        layout.setPadding(new Insets(10));
-//
-//        for (Option option : options) {
-//            GNButton btn = createButton(option.getName(), option.getAction());
-//            btn.setStyle(option.getStyle());
-//            layout.getChildren().add(btn);
-//        }
-//        return layout;
-//    }
-
-
+    @ApiStatus.Internal
     private Node createDemo(Node... node) {
         FlowPane root = new FlowPane();
         root.setPadding(new Insets(20));
@@ -399,16 +345,17 @@ public class Presentation
         return root;
     }
 
-    public Presentation footer(Author... authors) {
+    public T footer(Author... authors) {
         items.add(createFooter(authors));
-        return this;
+        return (T) this;
     }
 
-    public Presentation footer(@NotNull ObservableList<Author> authors) {
+    @ApiStatus.Experimental
+    public T footer(@NotNull ObservableList<Author> authors) {
         for (Author author : authors) {
             items.add(createFooter(author));
         }
-        return this;
+        return (T) this;
     }
 
 
@@ -428,12 +375,12 @@ public class Presentation
 //                        "https://openjfx.io/javadoc/17/javafx.controls/javafx/scene/control/"+control+".html");
 //    }
 
+    @ApiStatus.Experimental
     public Author createUserDefault() {
         return new Author("Gleidson Neves",
                 "https://github.com/gleidsonmt",
                 "https://github.com/gleidsonmt/DashboardFx");
     }
-
 
     @ApiStatus.Internal
     private Node createFooter(Author... authors) {
@@ -478,63 +425,87 @@ public class Presentation
         return root;
     }
 
-    public Presentation demo(Node... node) {
+    public T demo(Node... node) {
         items.add(createDemo(node));
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(Node node, String java, String fxml) {
+    public T demonstration(Node node, String java, String fxml) {
         items.add(createTabs(List.of(node), java, fxml, null));
-        return this;
+        return (T) this;
     }
 
-//    public PresentationCreator demonstration(Node node, String java, String fxml) {
-//        items.add(createTabs(node, java, fxml, null));
-//        return this;
-//    }
-
-    public Presentation demonstration(List<Node> nodes, String java) {
+    public T demonstration(List<Node> nodes, String java) {
         demonstration(nodes, java, null);
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(List<Node> nodes) {
+    public T demonstration(List<Node> nodes) {
         demonstration(nodes, null, null);
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(Node node) {
+    public T demonstration(Node node) {
         demonstration(node, null);
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(Node node, String java) {
+    public T demonstration(Node node, String java) {
         demonstration(node, java, null);
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(List<Node> nodes, String java, String fxml) {
+    public T demonstration(List<Node> nodes, String java, String fxml) {
         items.add(createTabs(nodes, java, fxml, null));
-        return this;
+        return (T) this;
     }
 
-    public Presentation demonstration(List<Node> nodes, String java, String fxml, String css) {
+    public T demonstration(List<Node> nodes, String java, String fxml, String css) {
         items.add(createTabs(nodes, java, fxml, css));
-        return this;
+        return (T) this;
     }
 
-    public Presentation node(Node node) {
+    /**
+     * Add a custom node to presentation.
+     * @param node The node to add.
+     * @return (T  thispresentation.
+     */
+    public T node(Node node) {
         items.add(node);
-        return this;
+        return (T) this;
     }
 
+    /**
+     * Create a table with two columns.
+     * The first column represents a css class and the second the value.
+     * @param presentations The object to get the properties
+     * @return (T  thispresentation.
+     */
+    @ApiStatus.Experimental
+    public T cssTable(CssPresentation... presentations) {
+        TableView<CssPresentation> tableView = new TableView<>();
+        tableView.getStyleClass().add("presentation-table");
+
+        tableView.getItems().setAll(presentations);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setMinHeight(200);
+        TableColumn<CssPresentation, String> tableClass = new TableColumn<>("Class");
+        TableColumn<CssPresentation, String> tableStyle = new TableColumn<>("Style");
+        tableClass.setCellValueFactory(new PropertyValueFactory<>("property"));
+        tableStyle.setCellValueFactory(new PropertyValueFactory<>("content"));
+
+        tableView.getColumns().add(tableClass);
+        tableView.getColumns().add(tableStyle);
+        items.add(tableView);
+        return (T) this;
+    }
 
     private final String java = "";
     private final String fxml = "";
     private final String css = "";
 
     @ApiStatus.Experimental
-    public Presentation demonstration(List<Node> nodes, InputStream inputStream) {
+    public T demonstration(List<Node> nodes, InputStream inputStream) {
 
         Scanner scanner = new Scanner(inputStream);
         StringBuilder java = new StringBuilder();
@@ -581,58 +552,7 @@ public class Presentation
 //            }
 //        });
         items.add(createTabs(nodes, java.toString(), fxml.toString(), css.toString()));
-        return this;
-    }
-
-    public Presentation file(File file) {
-        System.out.println("file = " + file);
-        //Files.lines(..).forEach(...)
-
-
-
-        BufferedReader bfri = new BufferedReader(
-                new InputStreamReader(System.in));
-
-        System.out.print("Enter the Path : ");
-
-        // Reading File name
-
-
-        // Note:  Double backquote is to avoid compiler
-        // interpret words
-        // like \test as \t (ie. as a escape sequence)
-
-        // Creating an object of BufferedReader class
-        BufferedReader bfro = null;
-        try {
-            System.out.println("file.toURI() = " + file.toURI());
-            String path = file.getPath();
-            bfri.readLine();
-
-            bfro = new BufferedReader(
-                    new FileReader(path));
-
-            String st;
-
-            // Condition holds true till
-            // there is character in a string
-            while ((st = bfro.readLine()) != null)
-                System.out.println(st);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Declaring a string variable
-
-//        try {
-//            Files.lines(file.toPath()).forEach(el -> {
-//                System.out.println("el = " + el);
-//            });
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-        return this;
+        return (T) this;
     }
 
     @ApiStatus.Internal
@@ -640,7 +560,6 @@ public class Presentation
 
         VBox box = new VBox();
 
-        System.out.println("java = " + java);
         FlowPane root = new FlowPane();
 
         root.setPadding(new Insets(20));
@@ -649,9 +568,6 @@ public class Presentation
         root.getChildren().setAll(list);
         root.setAlignment(Pos.CENTER);
 
-        System.out.println("java = " + java);
-        System.out.println("fxml = " + fxml);
-        System.out.println("css = " + css);
         if (java != null && (fxml != null || css != null)) {
             TabPane tabPane = new TabPane();
             VBox.setVgrow(tabPane, Priority.ALWAYS);
@@ -677,14 +593,16 @@ public class Presentation
             }
 
             box.getChildren().setAll(root, tabPane);
-            System.out.println("what");
 //        root.getStyleClass().addAll("border-light-gray-2", "border-1", "depth-2");
-            root.setStyle("-fx-background-color: -light-gray;");
+
         } else if (java != null) {
+            box.setSpacing(10);
             box.getChildren().setAll(root, createBlockCode(CodeType.JAVA, java));
         } else {
+            box.setSpacing(10);
             box.getChildren().setAll(root);
         }
+        root.setStyle("-fx-background-color: -light-gray;");
 
 
 
@@ -695,10 +613,7 @@ public class Presentation
         return createLabel(title, "subtitle", "h2");
     }
 
-//    private @NotNull Label createTitle(String title, String related, String options) {
-//        return createTitle(title, related, options, null);
-//    }
-
+    @ApiStatus.Internal
     private @NotNull Label createTitle(String title, String related, @NotNull String... styles) {
 
         TreeTitle label = new TreeTitle(title);
@@ -728,13 +643,16 @@ public class Presentation
 
     }
 
+    @ApiStatus.Internal
     private @NotNull Label createLabel(String text, String... styleClass) {
         Label label = new Label(text);
+        label.setWrapText(true);
         label.getStyleClass().addAll(styleClass);
         VBox.setMargin(label, new Insets(0, 0, 20, 0));
         return label;
     }
 
+    @ApiStatus.Internal
     private @NotNull Node createImage(Image image) {
         Region region = new Region();
 //        region.setMinSize(image.getWidth(), image.getHeight());
@@ -754,11 +672,12 @@ public class Presentation
         return region;
     }
 
+    @ApiStatus.Internal
     private @NotNull Separator createSeparator() {
-        Separator separator = new Separator(Orientation.HORIZONTAL);
-        return separator;
+        return new Separator(Orientation.HORIZONTAL);
     }
 
+    @ApiStatus.Internal
     @Contract("_ -> new")
     private @NotNull TextFlow createText(String _text) {
         Text text = new Text(_text);
@@ -785,12 +704,13 @@ public class Presentation
     }
 
     @Override
-    public PresentationCreator build() {
+    public T build() {
         if (items.stream().noneMatch(n -> n.getStyleClass().contains("title"))) {
             body.setPadding(new Insets(30, 30, 30, 30));
         }
-        body.getChildren().addAll(items);
-        return this;
+//        System.out.println("items = " + items);
+        body.getChildren().setAll(items);
+        return (T) this;
     }
 
     @Override

@@ -7,18 +7,20 @@ plugins {
 }
 
 group 'io.github.gleidsonmt'
-version '1.0.24'
+version '1.0.32'
 
 repositories {
   mavenCentral()
 }
 
+
+sourceCompatibility = '23'
+targetCompatibility = '23'
+
+
 ext {
   junitVersion = '5.10.0'
 }
-
-sourceCompatibility = '17'
-targetCompatibility = '17'
 
 tasks.withType(JavaCompile).configureEach {
   options.encoding = 'UTF-8'
@@ -30,18 +32,13 @@ application {
 }
 
 javafx {
-  version = '17.0.6'
-  modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
+  version = '23.0.2'
+  modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
 }
 
 dependencies {
 
-//  implementation project(":blockcode")
-//  implementation project(":core")
-
   implementation fileTree("vendor") { include "*.jar" }
-
-  implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
