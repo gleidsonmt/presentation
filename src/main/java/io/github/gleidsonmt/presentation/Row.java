@@ -7,12 +7,12 @@ import javafx.beans.property.StringProperty;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  24/02/2025
  */
-public class CssPresentation {
+public class Row {
 
     private final StringProperty property = new SimpleStringProperty();
     private final StringProperty content =new SimpleStringProperty();
 
-    public CssPresentation(String property, String content) {
+    public Row(String property, String content) {
         this.property.set(property);
         this.content.set(content);
     }

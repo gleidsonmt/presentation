@@ -1,10 +1,12 @@
 package io.github.gleidsonmt.presentation;
 
+import io.github.gleidsonmt.presentation.internal.Body;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.scenicview.ScenicView;
@@ -13,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -69,17 +70,23 @@ public class HelloApplication
 
                 .legend("My legend")
                 .date(LocalDate.now())
-                .cssTable(
-                        new CssPresentation("h1", "-fx-font-size: 12"),
-                        new CssPresentation("h2", "-fx-font-size: 12"),
-                        new CssPresentation("h3", "-fx-font-size: 12"),
-                        new CssPresentation("h4", "-fx-font-size: 12"),
-                        new CssPresentation("h5", "-fx-font-size: 12"),
-                        new CssPresentation("h6", "-fx-font-size: 12")
+                .table(
+                        new Row("h1", "-fx-font-size: 12"),
+                        new Row("h2", "-fx-font-size: 12"),
+                        new Row("h3", "-fx-font-size: 12"),
+                        new Row("h4", "-fx-font-size: 12"),
+                        new Row("h5", "-fx-font-size: 12"),
+                        new Row("h6", "-fx-font-size: 12")
                 )
+                .demo(createDemo())
+                .codes("fxml", "", "")
                 .demonstration(List.of(new Button("Wow")), "java")
+                .demo(List.of(new Label("Lable"), new Label("Lable")))
                 .h1("Number one", null)
                 .h2("Number two", "Number one")
+                .link("Google", "google.com")
+                .youTube("https://www.youtube.com/embed/h1JTqEtnKgw?si=8MX3rs1cM9nxocdx")
+//                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
 
 //                .youTube("", "")
                 .build();
@@ -90,7 +97,16 @@ public class HelloApplication
         stage.show();
 
 //        read();
+
         ScenicView.show(scene);
+    }
+
+    private Node createDemo() {
+        Button button = new Button();
+        button.setOnAction(e -> {
+            Body body = (Body) button.getScene().lookup(".presentation-body");
+        });
+        return button;
     }
 
     void read() {

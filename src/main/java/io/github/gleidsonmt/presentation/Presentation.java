@@ -22,6 +22,7 @@ package io.github.gleidsonmt.presentation;
 import io.github.gleidsonmt.blockcode.BlockCode;
 import io.github.gleidsonmt.blockcode.CodeType;
 import io.github.gleidsonmt.blockcode.Theme;
+import io.github.gleidsonmt.presentation.internal.Body;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -29,18 +30,27 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebView;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.net.URL;
-import java.util.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 /**
  * Base class to create imperative presentations.
@@ -63,14 +73,12 @@ import java.util.*;
  */
 
 @ApiStatus.AvailableSince("1.0")
-//@SuppressWarnings({"unused", "unchecked"})
 @SuppressWarnings({"unchecked", "unused"})
-public class Presentation<T extends PresentationCreator>
-        implements PresentationCreator {
+public class Presentation<T extends PresentationCreator> implements PresentationCreator {
 
     //Top and down root
-    private final VBox body = new VBox();
-    // items for add in tree
+    private final Body body = new Body();
+    // items for add in a tree
     protected ObservableList<Node> items;
     // base from nodes
     protected final StackPane root;
@@ -79,6 +87,7 @@ public class Presentation<T extends PresentationCreator>
 //        this.context = _context;
         this.root = new StackPane();
         this.root.getStyleClass().add("presentation");
+        this.body.getStyleClass().add("presentation-body");
         items = FXCollections.observableArrayList();
 
         ScrollPane scroll = new ScrollPane();
@@ -231,7 +240,19 @@ public class Presentation<T extends PresentationCreator>
     }
 
     /**
+     * Redirect to a browser with url.
+     * @param placeholder The text to show.
+     * @param url The website to go.
+     * @return A hyperlink.
+     */
+    public T link(String placeholder, String url) {
+        items.add(createHyperlink(placeholder, url));
+        return (T) this;
+    }
+
+    /**
      * The typical text 12.
+     *
      * @param legend The text for legend.
      * @return This presentation.
      */
@@ -242,6 +263,7 @@ public class Presentation<T extends PresentationCreator>
 
     /**
      * Creates a block of code with highlight.
+     *
      * @param text The text of code.
      * @return This Presentation
      */
@@ -259,68 +281,88 @@ public class Presentation<T extends PresentationCreator>
         } else throw new RuntimeException("Language specified doesn't have a match.");
     }
 
-    public T youTube(String url, URL resource) {
+    public T codes(String java) {
+        items.add(createTabs(java, null, null));
+        return (T) this;
+    }
 
-//        Region region = (Region) createImage(
-//                new Image(resource.toExternalForm())
-//        );
-//
-//        region.setPrefSize(300, 300);
+    public T codes(String java, String fxml) {
+        items.add(createTabs(java, fxml, null));
+        return (T) this;
+    }
 
-//        StackPane root = new StackPane();
-//        WebView webView = new WebView();
+    public T codes(String java, String fxml, String css) {
+        items.add(createTabs(java, fxml, css));
+        return (T) this;
+    }
 
+    @ApiStatus.Experimental
+    public T youTube(String url) {
+
+        WebView webView = new WebView();
+
+//        webView.getEngine().load(url);
+        webView.setMinSize(400, 400);
 
 //        webView.getEngine().load("https://www.youtube.com/watch?v=maX5ymmQixM");
-//        webView.setMinSize(200, 200);
 
-//        Button button = new Button("Open Player");
 //
-//        button.setOnMouseClicked(event -> {
+        webView.getEngine().setJavaScriptEnabled(true);
 //
-//            double width = context.stage().getWidth()
-//                    > 700 ? 700 : context.stage().getWidth() - 100 ;
-//
-//            double height = context.stage().getHeight()
-//                    > 500 ? 500 : context.stage().getHeight() - 200 ;
-//
-//            webView.getEngine().setJavaScriptEnabled(true);
-//
-//            webView.getEngine().loadContent(
-//                "<!DOCTYPE html>" +
-//                "<html lang=\"en\">" +
-//                    "<body>" +
-//                        "<iframe width=\"" + width + "\" height=\"" + height + "\"" +
-//                            """
-//                            src="https://www.youtube.com/embed/maX5ymmQixM"
-//                            title="JavaFX UI: iOS Style Toggle Switch"
-//                            frameborder="0" allow="accelerometer;
-//                            autoplay; clipboard-write; encrypted-media;
-//                            gyroscope; picture-in-picture; web-share" allowfullscreen>
-//                        </iframe>
-//                            """ +
-//                    "</body>" +
-//                "</html>"
-//            );
-//
-//            webView.getEngine().getLoadWorker().stateProperty()
-//                    .addListener((obs, oldValue, newValue) -> {
-//                        context.logger().info(
-//                                newValue.name()
-//                        );
-//                    });
-//
-//            context.wrapper()
-//                    .content(
-//                            new DialogContainer(webView)
-//                                    .size(width + 50, height + 45)
-//                    )
-//                    .pos(Pos.CENTER)
-//                    .show();
-//        });
-//        items.add(webView);
-//        items.add(button);
+        double width = 400;
+        double height = 400;
+
+//        src="https://www.youtube.com/embed/maX5ymmQixM"
+        webView.getEngine().loadContent(
+                "<!DOCTYPE html>" +
+                "<html lang=\"en\">" +
+                "<body>" +
+                "<iframe style='width: 100%;' height=\"" + height + "\"" +
+//                "src=https://www.youtube.com/embed/maX5ymmQixM" +
+                "src='" + url + "'" +
+                """
+                            title="JavaFX UI: iOS Style Toggle Switch"
+                            frameborder="0" allow="accelerometer;
+                            autoplay; clipboard-write; encrypted-media;
+                            gyroscope; picture-in-picture; web-share" allowfullscreen>
+                        </iframe>
+                        """ +
+                "</body>" +
+                "</html>"
+        );
+
+        items.add(webView);
         return (T) this;
+    }
+
+
+    private void addClassesOrStyle(Node node, String... options) {
+        StringBuilder builder = new StringBuilder();
+        if (options != null) {
+            for (String c : options) {
+                if (c.startsWith("-fx-")) {
+                    builder.append(c);
+                } else {
+                    node.getStyleClass().add(c);
+                }
+            }
+        }
+
+        node.setStyle(builder.toString());
+    }
+
+    @ApiStatus.Internal
+    private Hyperlink createHyperlink(String placeholder, String url) {
+        Hyperlink hyperlink = new Hyperlink(placeholder);
+        hyperlink.setOnAction(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI(url.startsWith("https") ? url : "https://" + url ));
+            } catch (IOException | URISyntaxException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        return hyperlink;
     }
 
     @ApiStatus.Internal
@@ -330,6 +372,22 @@ public class Presentation<T extends PresentationCreator>
                 .codeType(codeType)
                 .content(content)
                 .build();
+    }
+
+    @ApiStatus.Internal
+    private Node createDemos(List<Node> nodes, String... classes) {
+        FlowPane root = new FlowPane();
+        root.getStyleClass().addAll(classes);
+        root.setPadding(new Insets(20));
+        root.setVgap(10);
+        root.setHgap(10);
+        root.setAlignment(Pos.CENTER_LEFT);
+//        root.getStyleClass().addAll("border-light-gray-2", "border-1", "depth-2");
+//        root.setStyle("-fx-background-color: -light-gray;");
+        for (Node node : nodes) {
+            root.getChildren().add(node);
+        }
+        return root;
     }
 
     @ApiStatus.Internal
@@ -430,36 +488,52 @@ public class Presentation<T extends PresentationCreator>
         return (T) this;
     }
 
+    public T demo(List<Node> nodes) {
+        items.add(createDemos( nodes));
+        return (T) this;
+    }
+    public T demo(List<Node> nodes, String... classes) {
+        items.add(createDemos( nodes, classes));
+        return (T) this;
+    }
+
+    @Deprecated
     public T demonstration(Node node, String java, String fxml) {
         items.add(createTabs(List.of(node), java, fxml, null));
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(List<Node> nodes, String java) {
         demonstration(nodes, java, null);
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(List<Node> nodes) {
         demonstration(nodes, null, null);
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(Node node) {
         demonstration(node, null);
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(Node node, String java) {
         demonstration(node, java, null);
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(List<Node> nodes, String java, String fxml) {
         items.add(createTabs(nodes, java, fxml, null));
         return (T) this;
     }
 
+    @Deprecated
     public T demonstration(List<Node> nodes, String java, String fxml, String css) {
         items.add(createTabs(nodes, java, fxml, css));
         return (T) this;
@@ -467,8 +541,9 @@ public class Presentation<T extends PresentationCreator>
 
     /**
      * Add a custom node to presentation.
+     *
      * @param node The node to add.
-     * @return (T  thispresentation.
+     * @return (T thispresentation.
      */
     public T node(Node node) {
         items.add(node);
@@ -478,19 +553,21 @@ public class Presentation<T extends PresentationCreator>
     /**
      * Create a table with two columns.
      * The first column represents a css class and the second the value.
+     *
      * @param presentations The object to get the properties
-     * @return (T  thispresentation.
+     * @return (T thispresentation.
      */
     @ApiStatus.Experimental
-    public T cssTable(CssPresentation... presentations) {
-        TableView<CssPresentation> tableView = new TableView<>();
+    public T table(Row... presentations) {
+        TableView<Row> tableView = new TableView<>();
         tableView.getStyleClass().add("presentation-table");
 
         tableView.getItems().setAll(presentations);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         tableView.setMinHeight(200);
-        TableColumn<CssPresentation, String> tableClass = new TableColumn<>("Class");
-        TableColumn<CssPresentation, String> tableStyle = new TableColumn<>("Style");
+        TableColumn<Row, String> tableClass = new TableColumn<>("Class");
+        TableColumn<Row, String> tableStyle = new TableColumn<>("Style");
         tableClass.setCellValueFactory(new PropertyValueFactory<>("property"));
         tableStyle.setCellValueFactory(new PropertyValueFactory<>("content"));
 
@@ -517,7 +594,7 @@ public class Presentation<T extends PresentationCreator>
         while (scanner.hasNext()) {
             String aux = scanner.nextLine();
             if (aux.trim().startsWith("[")) {
-                aux = aux.substring(aux.indexOf("[")+1, aux.length() -1);
+                aux = aux.substring(aux.indexOf("[") + 1, aux.length() - 1);
                 if (aux.equalsIgnoreCase("java")) {
                     isJava = true;
                     isCss = false;
@@ -553,6 +630,30 @@ public class Presentation<T extends PresentationCreator>
 //        });
         items.add(createTabs(nodes, java.toString(), fxml.toString(), css.toString()));
         return (T) this;
+    }
+
+    private Node createTabs(String java, String fxml, String css) {
+        TabPane tabPane = new TabPane();
+
+        if (java != null && !java.isBlank()) {
+            Tab javaTab = new Tab("Java");
+            tabPane.getTabs().add(javaTab);
+            javaTab.setContent(createBlockCode(CodeType.JAVA, java));
+        }
+
+        if (fxml != null && !fxml.isBlank()) {
+            Tab tab = new Tab("FXML");
+            tabPane.getTabs().add(tab);
+            tab.setContent(createBlockCode(CodeType.XML, fxml));
+        }
+
+        if (css != null && !css.isBlank()) {
+            Tab tab = new Tab("FXML");
+            tabPane.getTabs().add(tab);
+            tab.setContent(createBlockCode(CodeType.CSS, css));
+        }
+
+        return tabPane;
     }
 
     @ApiStatus.Internal
@@ -605,7 +706,6 @@ public class Presentation<T extends PresentationCreator>
         root.setStyle("-fx-background-color: -light-gray;");
 
 
-
         return box;
     }
 
@@ -623,18 +723,7 @@ public class Presentation<T extends PresentationCreator>
             label.setRelated(new TreeTitle(related));
         }
 
-        StringBuilder builder = new StringBuilder();
-        if (styles != null) {
-            for (String c : styles) {
-                if (c.startsWith("-fx-")) {
-                    builder.append(c);
-                } else {
-                    label.getStyleClass().add(c);
-                }
-            }
-        }
-
-        label.setStyle(builder.toString());
+       addClassesOrStyle(label, styles);
 //        if (styleClass != null) label.getStyleClass().addAll(styleClass);
 
         VBox.setMargin(label, new Insets(20, 0, 10, 0));
@@ -647,7 +736,7 @@ public class Presentation<T extends PresentationCreator>
     private @NotNull Label createLabel(String text, String... styleClass) {
         Label label = new Label(text);
         label.setWrapText(true);
-        label.getStyleClass().addAll(styleClass);
+        addClassesOrStyle(label, styleClass);
         VBox.setMargin(label, new Insets(0, 0, 20, 0));
         return label;
     }
@@ -690,15 +779,7 @@ public class Presentation<T extends PresentationCreator>
         text.getStyleClass().add("text-14");
         TextFlow flow = new TextFlow(text);
 
-        StringBuilder builder = new StringBuilder();
-        for (String c : options) {
-            if (c.startsWith("-fx-")) {
-                builder.append(c);
-            } else {
-                flow.getStyleClass().add(c);
-            }
-        }
-        flow.setStyle(builder.toString());
+        addClassesOrStyle(flow, options);
 
         return flow;
     }
