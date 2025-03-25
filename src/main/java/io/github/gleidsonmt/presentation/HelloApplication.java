@@ -44,7 +44,7 @@ public class HelloApplication
     public void start(Stage stage) throws IOException {
 
 //        Presentation presentation = new Presentation();
-        Tutorial presentation = new Tutorial();
+        Presentation<Presentation> presentation = new Presentation<>();
 
         VBox node = new VBox(new Button("X"));
         node.setMinHeight(200);
@@ -68,27 +68,28 @@ public class HelloApplication
 //                .demonstration(List.of(new Button("Button")), getClass().getResourceAsStream("texts/buttons.txt"))
 //                .image(new Image(Objects.requireNonNull(getClass().getResource("img/avatar.jpg")).toExternalForm()))
 
-                .legend("My legend")
-                .date(LocalDate.now())
-                .table(
-                        new Row("h1", "-fx-font-size: 12"),
-                        new Row("h2", "-fx-font-size: 12"),
-                        new Row("h3", "-fx-font-size: 12"),
-                        new Row("h4", "-fx-font-size: 12"),
-                        new Row("h5", "-fx-font-size: 12"),
-                        new Row("h6", "-fx-font-size: 12")
-                )
-                .demo(createDemo())
-                .codes("fxml", "", "")
-                .demonstration(List.of(new Button("Wow")), "java")
-                .demo(List.of(new Label("Lable"), new Label("Lable")))
-                .h1("Number one", null)
-                .h2("Number two", "Number one")
-                .link("Google", "google.com")
-                .youTube("https://www.youtube.com/embed/h1JTqEtnKgw?si=8MX3rs1cM9nxocdx")
-//                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
+                /*     .legend("My legend")
+                     .date(LocalDate.now())
+                     .table(
+                             new Row("h1", "-fx-font-size: 12"),
+                             new Row("h2", "-fx-font-size: 12"),
+                             new Row("h3", "-fx-font-size: 12"),
+                             new Row("h4", "-fx-font-size: 12"),
+                             new Row("h5", "-fx-font-size: 12"),
+                             new Row("h6", "-fx-font-size: 12")
+                     )
+                     .demo(createDemo())
+                     .codes("fxml", "", "")
+                     .demonstration(List.of(new Button("Wow")), "java")
+                     .demo(List.of(new Label("Lable"), new Label("Lable")))
+                     .h1("Number one", null)
+                     .h2("Number two", "Number one")
+                     .link("Google", "google.com")
 
-//                .youTube("", "")
+                     .youTube("https://www.youtube.com/embed/h1JTqEtnKgw?si=8MX3rs1cM9nxocdx")*/
+//                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
+                .h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis velit ut dolor vestibulum aliquet in non sem. Praesent vitae purus lobortis, commodo quam vehicula, sagittis enim. Quisque sed eros at augue luctus pharetra. Nam non dolor laoreet magna egestas rhoncus sed vitae arcu. Morbi interdum vestibulum nulla nec varius. Nullam sed risus nec justo accumsan dignissim non eget ante. Fusce dapibus nibh ante, sed placerat ante aliquet in. Nullam blandit tortor at tellus molestie feugiat. Proin blandit tortor id fermentum maximus. Morbi accumsan porttitor velit, a facilisis metus finibus ac. Cras a scelerisque magna, vitae facilisis est. Phasellus maximus tortor et lacus maximus rhoncus. In purus metus, hendrerit rhoncus lacinia eu, pharetra a felis. Sed ac neque vel dui dignissim elementum vitae ut ante.")
+                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
                 .build();
 
         Scene scene = new Scene((Parent) presentation.getRoot(), 800, 600);

@@ -303,6 +303,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
 //        webView.getEngine().load(url);
         webView.setMinSize(400, 400);
+        webView.setPrefSize(400, 400);
 
 //        webView.getEngine().load("https://www.youtube.com/watch?v=maX5ymmQixM");
 
@@ -543,10 +544,15 @@ public class Presentation<T extends PresentationCreator> implements Presentation
      * Add a custom node to presentation.
      *
      * @param node The node to add.
-     * @return (T thispresentation.
+     * @return T this presentation.
      */
     public T node(Node node) {
         items.add(node);
+        return (T) this;
+    }
+
+    public T nodes(Node... nodes) {
+        items.addAll(nodes);
         return (T) this;
     }
 
@@ -563,7 +569,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         tableView.getStyleClass().add("presentation-table");
 
         tableView.getItems().setAll(presentations);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         tableView.setMinHeight(200);
         TableColumn<Row, String> tableClass = new TableColumn<>("Class");
@@ -717,7 +723,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     private @NotNull Label createTitle(String title, String related, @NotNull String... styles) {
 
         TreeTitle label = new TreeTitle(title);
-        label.getStyleClass().addAll("title");
+//        label.getStyleClass().addAll("title");
 
         if (related != null) {
             label.setRelated(new TreeTitle(related));
