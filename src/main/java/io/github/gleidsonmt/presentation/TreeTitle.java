@@ -42,6 +42,7 @@ public class TreeTitle extends Label {
 
     public TreeTitle(String text) {
         super(text);
+        setWrapText(true);
     }
 
     /**
