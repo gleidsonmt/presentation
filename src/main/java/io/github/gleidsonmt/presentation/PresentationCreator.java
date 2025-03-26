@@ -29,8 +29,6 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.Internal
 public interface PresentationCreator {
-
-
     /**
      * Call a method to add items and create a structure.
      * @return this build.
