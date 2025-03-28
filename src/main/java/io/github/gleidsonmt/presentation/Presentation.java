@@ -487,14 +487,25 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return root;
     }
 
-    public T demo(Node... node) {
+    public T demo(Node node) {
         items.add(createDemo(node));
         return (T) this;
     }
 
-    @Deprecated
-    public T demo(List<Node> nodes) {
-        items.add(createDemo(new Node[]{(Node) nodes}));
+    public T demo(Node[] nodes) {
+        items.add(createDemo(nodes));
+        return (T) this;
+    }
+
+    public T demo(Node[] nodes, Code... codes) {
+        items.add(createTabs(nodes, codes));
+        return (T) this;
+    }
+
+
+    @ApiStatus.Experimental
+    public T demo(Node nodes, Code... codes) {
+        items.add(createTabs(new Node[]{nodes}, codes));
         return (T) this;
     }
 
@@ -516,11 +527,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-    @ApiStatus.Experimental
-    public T demo(Node node, Code... codes) {
-        items.add(createTabs(List.of(node), codes));
-        return (T) this;
-    }
 
     @Deprecated
     public T demonstration(List<Node> nodes, String java) {
@@ -670,7 +676,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
-    private Node createTabs(List<Node> nodes, Code... codes) {
+    private Node createTabs(Node[] nodes, Code... codes) {
         VBox box = new VBox();
 
         FlowPane root = new FlowPane();
