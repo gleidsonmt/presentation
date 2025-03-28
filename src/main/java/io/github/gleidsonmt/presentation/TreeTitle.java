@@ -26,10 +26,8 @@ import org.jetbrains.annotations.ApiStatus;
 
 /**
  * This is a custom label used to create a link with the tree.
- * Using presentations creators needs a component that
- * store its position in document and if is related with another
- * title.
-// * @see TutorialCreator
+ * Used to summarize presentations.
+ * Store its position in a tree document and if is related with another title.
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  17/05/2023
  */

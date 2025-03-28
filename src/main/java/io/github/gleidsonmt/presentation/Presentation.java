@@ -206,14 +206,9 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-    @ApiStatus.Experimental
-    @Deprecated(forRemoval = true)
-    public T subTitle(String title) {
-        items.add(createSubTitle(title));
-        return (T) this;
-    }
 
     @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     public T subtitle(String title) {
         items.add(createSubTitle(title));
         return (T) this;
@@ -281,16 +276,22 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         } else throw new RuntimeException("Language specified doesn't have a match.");
     }
 
+    @ApiStatus.Experimental
+    @Deprecated
     public T codes(String java) {
         items.add(createTabs(java, null, null));
         return (T) this;
     }
 
+    @ApiStatus.Experimental
+    @Deprecated
     public T codes(String java, String fxml) {
         items.add(createTabs(java, fxml, null));
         return (T) this;
     }
 
+    @ApiStatus.Experimental
+    @Deprecated
     public T codes(String java, String fxml, String css) {
         items.add(createTabs(java, fxml, css));
         return (T) this;
@@ -336,7 +337,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-
     private void addClassesOrStyle(Node node, String... options) {
         StringBuilder builder = new StringBuilder();
         if (options != null) {
@@ -376,6 +376,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
+    @Deprecated
     private Node createDemos(List<Node> nodes, String... classes) {
         FlowPane root = new FlowPane();
         root.getStyleClass().addAll(classes);
@@ -383,8 +384,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         root.setVgap(10);
         root.setHgap(10);
         root.setAlignment(Pos.CENTER_LEFT);
-//        root.getStyleClass().addAll("border-light-gray-2", "border-1", "depth-2");
-//        root.setStyle("-fx-background-color: -light-gray;");
         for (Node node : nodes) {
             root.getChildren().add(node);
         }
@@ -398,18 +397,19 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         root.setVgap(10);
         root.setHgap(10);
         root.setAlignment(Pos.CENTER_LEFT);
-//        root.getStyleClass().addAll("border-light-gray-2", "border-1", "depth-2");
-//        root.setStyle("-fx-background-color: -light-gray;");
         root.getChildren().addAll(node);
         return root;
     }
 
+    @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     public T footer(Author... authors) {
         items.add(createFooter(authors));
         return (T) this;
     }
 
     @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     public T footer(@NotNull ObservableList<Author> authors) {
         for (Author author : authors) {
             items.add(createFooter(author));
@@ -435,6 +435,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 //    }
 
     @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     public Author createUserDefault() {
         return new Author("Gleidson Neves",
                 "https://github.com/gleidsonmt",
@@ -442,6 +443,8 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
+    @ApiStatus.Experimental
+    @Deprecated(forRemoval = true)
     private Node createFooter(Author... authors) {
         VBox root = new VBox();
 
@@ -489,18 +492,33 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
+    @Deprecated
     public T demo(List<Node> nodes) {
-        items.add(createDemos( nodes));
+        items.add(createDemo(new Node[]{(Node) nodes}));
         return (T) this;
     }
+
+    @Deprecated
     public T demo(List<Node> nodes, String... classes) {
         items.add(createDemos( nodes, classes));
         return (T) this;
     }
 
     @Deprecated
-    public T demonstration(Node node, String java, String fxml) {
+    public T demo(Node node, String java, String fxml) {
         items.add(createTabs(List.of(node), java, fxml, null));
+        return (T) this;
+    }
+
+    @Deprecated
+    public T demo(Node node, String java, String fxml, String css) {
+        items.add(createTabs(List.of(node), java, fxml, css));
+        return (T) this;
+    }
+
+    @ApiStatus.Experimental
+    public T demo(Node node, Code... codes) {
+        items.add(createTabs(List.of(node), codes));
         return (T) this;
     }
 
@@ -513,18 +531,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     @Deprecated
     public T demonstration(List<Node> nodes) {
         demonstration(nodes, null, null);
-        return (T) this;
-    }
-
-    @Deprecated
-    public T demonstration(Node node) {
-        demonstration(node, null);
-        return (T) this;
-    }
-
-    @Deprecated
-    public T demonstration(Node node, String java) {
-        demonstration(node, java, null);
         return (T) this;
     }
 
@@ -553,6 +559,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     public T nodes(Node... nodes) {
         items.addAll(nodes);
+        Arrays.stream(nodes).forEach(el -> VBox.setMargin(el, new Insets(10,0,10,0)));
         return (T) this;
     }
 
@@ -663,6 +670,40 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
+    private Node createTabs(List<Node> nodes, Code... codes) {
+        VBox box = new VBox();
+
+        FlowPane root = new FlowPane();
+
+        root.setPadding(new Insets(20));
+        root.setVgap(10);
+        root.setHgap(10);
+        root.getChildren().setAll(nodes);
+        root.setAlignment(Pos.CENTER);
+
+        TabPane tabPane = new TabPane();
+
+        for (Code code : codes) {
+            VBox.setVgrow(tabPane, Priority.ALWAYS);
+//        tabPane.setPrefHeight(100);
+            tabPane.setMinHeight(150);
+
+            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+//
+            Tab javaTab = new Tab(code.toString());
+            tabPane.getTabs().add(javaTab);
+//            javaTab.setContent(createBlockCode(CodeType.JAVA, code.getContent()));
+            javaTab.setContent(createBlockCode(code.getType(), code.getContent()));
+        }
+
+        box.getChildren().setAll(root, tabPane);
+
+        root.setStyle("-fx-background-color: -light-gray;");
+
+        return box;
+    }
+
+    @ApiStatus.Internal
     private Node createTabs(List<Node> list, String java, String fxml, String css) {
 
         VBox box = new VBox();
@@ -715,6 +756,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return box;
     }
 
+    @Deprecated(forRemoval = true)
     private @NotNull Label createSubTitle(String title) {
         return createLabel(title, "subtitle", "h2");
     }
@@ -795,8 +837,8 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         if (items.stream().noneMatch(n -> n.getStyleClass().contains("title"))) {
             body.setPadding(new Insets(30, 30, 30, 30));
         }
-//        System.out.println("items = " + items);
         body.getChildren().setAll(items);
+        System.out.println("items = " + items);
         return (T) this;
     }
 
