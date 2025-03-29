@@ -44,7 +44,7 @@ public class HelloApplication
     public void start(Stage stage) throws IOException {
 
 //        Presentation presentation = new Presentation();
-        Presentation<Presentation> presentation = new Presentation<>();
+       SimplePresentation presentation = new SimplePresentation();
 
         VBox node = new VBox(new Button("X"));
         node.setMinHeight(200);
@@ -89,17 +89,33 @@ public class HelloApplication
                      .youTube("https://www.youtube.com/embed/h1JTqEtnKgw?si=8MX3rs1cM9nxocdx")*/
 //                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
 //                .h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis velit ut dolor vestibulum aliquet in non sem. Praesent vitae purus lobortis, commodo quam vehicula, sagittis enim. Quisque sed eros at augue luctus pharetra. Nam non dolor laoreet magna egestas rhoncus sed vitae arcu. Morbi interdum vestibulum nulla nec varius. Nullam sed risus nec justo accumsan dignissim non eget ante. Fusce dapibus nibh ante, sed placerat ante aliquet in. Nullam blandit tortor at tellus molestie feugiat. Proin blandit tortor id fermentum maximus. Morbi accumsan porttitor velit, a facilisis metus finibus ac. Cras a scelerisque magna, vitae facilisis est. Phasellus maximus tortor et lacus maximus rhoncus. In purus metus, hendrerit rhoncus lacinia eu, pharetra a felis. Sed ac neque vel dui dignissim elementum vitae ut ante.")
-//                .youTube("https://www.youtube.com/embed/maX5ymmQixM")
-                .demo(new Button("Button"),
-                        new Code("Button btn = new Button();"),
-                        new Code("<Button />", "fxml"),
-                        new Code(".button {} ", "css")
-                )
-                .nodes()
+//                .youTube("https://www.youtube.com/embed/maX5ymmQixM")\
 //                .demo(new Button(), "Button btn = new Button();", "<Button />", ".button {}")
 //                .demo(new Button(), "Button btn = new Button();", "<Button />")
                 // .demo(new Button(), new Code("code", .java)
+
+                .demo(new Button("Button"))
+                .demo(
+                        new Button("Button"),
+                        new Code("")
+                )
+                .demo(new Button[]{
+
+                }, new Code[]{
+
+                })
+                .demo(
+                        new Button("Button"),
+                        new Code("<button>")
+                )
+//                .load(yaml)
                 .build();
+
+//        PresentationBase<PresentationBase> pres = new PresentationBase<>();
+//        pres
+//                .title("Teste")
+//                .demo("")
+//                .build();
 
         Scene scene = new Scene((Parent) presentation.getRoot(), 800, 600);
         stage.setTitle("Hello!");
