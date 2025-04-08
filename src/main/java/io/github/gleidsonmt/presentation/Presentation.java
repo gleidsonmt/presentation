@@ -844,7 +844,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
             body.setPadding(new Insets(30, 30, 30, 30));
         }
         body.getChildren().setAll(items);
-        System.out.println("items = " + items);
         return (T) this;
     }
 

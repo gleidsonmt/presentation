@@ -171,9 +171,7 @@ public class HelloApplication
                 fxml.append(aux).append("\n");
             }
         }
-        System.out.println("java = " + java);
-        System.out.println("css = " + css);
-        System.out.println("fxl = " + fxml);
+
 
     }
 
