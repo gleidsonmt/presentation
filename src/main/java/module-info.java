@@ -1,4 +1,4 @@
-moduleImpl io.github.gleidsonmt.presentation {
+module io.github.gleidsonmt.presentation {
     requires org.jetbrains.annotations;
 
     requires io.github.gleidsonmt.blockcode;
