@@ -22,7 +22,6 @@ package io.github.gleidsonmt.presentation;
 import io.github.gleidsonmt.blockcode.BlockCode;
 import io.github.gleidsonmt.blockcode.CodeType;
 import io.github.gleidsonmt.blockcode.Theme;
-import io.github.gleidsonmt.presentation.internal.Body;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -77,7 +76,7 @@ import java.util.Scanner;
 public class Presentation<T extends PresentationCreator> implements PresentationCreator {
 
     //Top and down root
-    private final Body body = new Body();
+    private final VBox body = new VBox();
     // items for add in a tree
     protected ObservableList<Node> items;
     // base from nodes

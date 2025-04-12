@@ -1,6 +1,5 @@
 package io.github.gleidsonmt.presentation;
 
-import io.github.gleidsonmt.presentation.internal.Body;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -125,14 +124,6 @@ public class HelloApplication
 //        read();
 
         ScenicView.show(scene);
-    }
-
-    private Node createDemo() {
-        Button button = new Button();
-        button.setOnAction(e -> {
-            Body body = (Body) button.getScene().lookup(".presentation-body");
-        });
-        return button;
     }
 
     void read() {
