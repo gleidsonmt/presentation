@@ -570,13 +570,21 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     /**
      * Create a table with two columns.
-     * The first column represents a css class and the second the value.
-     *
      * @param presentations The object to get the properties
-     * @return (T thispresentation.
+     * @return T this presentation.
      */
-    @ApiStatus.Experimental
     public T table(Row... presentations) {
+        return table("Class", "Style", presentations);
+    }
+
+    /**
+     *  Create a table with two columns.
+     * @param columnOne First column name.
+     * @param columTwo Second column name.
+     * @param presentations  The object to get the properties
+     * @return T this presentation.
+     */
+    public T table(String columnOne, String columTwo, Row... presentations) {
         TableView<Row> tableView = new TableView<>();
         tableView.getStyleClass().add("presentation-table");
 
@@ -584,8 +592,8 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         tableView.setMinHeight(200);
-        TableColumn<Row, String> tableClass = new TableColumn<>("Class");
-        TableColumn<Row, String> tableStyle = new TableColumn<>("Style");
+        TableColumn<Row, String> tableClass = new TableColumn<>(columnOne);
+        TableColumn<Row, String> tableStyle = new TableColumn<>(columTwo);
         tableClass.setCellValueFactory(new PropertyValueFactory<>("property"));
         tableStyle.setCellValueFactory(new PropertyValueFactory<>("content"));
 
