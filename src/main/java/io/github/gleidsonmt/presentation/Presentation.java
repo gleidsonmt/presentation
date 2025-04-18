@@ -29,6 +29,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -366,7 +367,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
-    private BlockCode createBlockCode(CodeType codeType, String content) {
+    protected BlockCode createBlockCode(CodeType codeType, String content) {
         return new BlockCode()
                 .theme(Theme.GITHUB)
                 .codeType(codeType)
@@ -526,7 +527,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-
     @Deprecated
     public T demonstration(List<Node> nodes, String java) {
         demonstration(nodes, java, null);
@@ -545,14 +545,14 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public T demonstration(List<Node> nodes, String java, String fxml, String css) {
         items.add(createTabs(nodes, java, fxml, css));
         return (T) this;
     }
 
     /**
-     * Add a custom node to presentation.
+     * Add a custom node to the presentation.
      *
      * @param node The node to add.
      * @return T this presentation.
