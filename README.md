@@ -50,5 +50,5 @@ Getting typographic
         .getRoot(); // Here you can get the root node
 ```
 ## See with some style
-![exaple_with_style](./example.png)
+![exaple_with_style](example.png)
 
