@@ -16,7 +16,7 @@ As you grow up, you can pass components like this
     PresentationCreator = new PresentationCreator()
         .title("")
         .build()
-        .getRoot(); // Here you can get the rootImpl node
+        .getRoot(); // Here you can get the root node
 ```
 Getting typographic
 
@@ -27,7 +27,7 @@ Getting typographic
         ...
         .h6("h6")
         .build()
-        .getRoot(); // Here you can get the rootImpl node
+        .getRoot(); // Here you can get the root node
 ```
 ## See others
 ```java
@@ -38,16 +38,16 @@ Getting typographic
         .demonstration(new Button("Demo"), "java code") // That can be detailed whit a portion of code 
         .demonstration(new Button("Demo"), "java code", "fxml code", "css code") // Create tabs to navigate
         .build()
-        .getRoot(); // Here you can get the rootImpl node
+        .getRoot(); // Here you can get the root node
 ```
 
 ## System of parents
 ```java
     PresentationCreator = new PresentationCreator()
         .h1("Title One")
-        .h2("Title two", "Title One") // heres second parameters act likes rootImpl to future navigation
+        .h2("Title two", "Title One") // heres second parameters act likes root to future navigation
         .build()
-        .getRoot(); // Here you can get the rootImpl node
+        .getRoot(); // Here you can get the root node
 ```
 ## See with some style
 ![exaple_with_style](example.png)
