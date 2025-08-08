@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.scenicview.ScenicView;
+//import org.scenicview.ScenicView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -123,7 +123,7 @@ public class HelloApplication
 
 //        read();
 
-        ScenicView.show(scene);
+//        ScenicView.show(scene);
     }
 
     void read() {

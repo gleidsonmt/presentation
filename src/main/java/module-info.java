@@ -1,8 +1,7 @@
 module io.github.gleidsonmt.presentation {
     requires org.jetbrains.annotations;
-
+    requires java.desktop;
     requires io.github.gleidsonmt.blockcode;
-    requires org.scenicview.scenicview;
 
     opens io.github.gleidsonmt.presentation to javafx.fxml;
     exports io.github.gleidsonmt.presentation;
