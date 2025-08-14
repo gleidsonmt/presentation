@@ -850,6 +850,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         if (items.stream().noneMatch(n -> n.getStyleClass().contains("title"))) {
             body.setPadding(new Insets(30, 30, 30, 30));
         }
+
         body.getChildren().setAll(items);
         return (T) this;
     }
