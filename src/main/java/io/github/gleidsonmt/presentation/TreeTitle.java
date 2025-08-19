@@ -39,8 +39,9 @@ public class TreeTitle extends Label {
     private TreeTitle related;
     private String index;
 
-    public TreeTitle(String text) {
+    public TreeTitle(String text, String id) {
         super(text);
+        setId(id);
         setCache(true);
         setCacheHint(CacheHint.QUALITY);
         setWrapText(true);
@@ -84,6 +85,18 @@ public class TreeTitle extends Label {
     }
 
 //    @Override
+//    public String toString() {
+//        final StringBuffer sb = new StringBuffer("TreeTitle{");
+//        sb.append("\n\tid=").append(super.getId());
+//        sb.append("\n\tname=").append(getText());
+//        sb.append("\n\tposition=").append(position);
+//        sb.append("\n\trelated=").append(related);
+//        sb.append("\n\tindex='").append(index).append('\'');
+//        sb.append("\n}");
+//        return sb.toString();
+//    }
+
+    //    @Override
 //    public String toString() {
 //        return ", parent = " + getRelated();
 //    }

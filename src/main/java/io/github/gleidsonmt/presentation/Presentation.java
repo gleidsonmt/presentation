@@ -83,6 +83,8 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     // base from nodes
     protected final StackPane root;
 
+    private int idCount = 0;
+
     public Presentation() {
 //        this.context = _context;
         this.root = new StackPane();
@@ -776,12 +778,17 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     @ApiStatus.Internal
     private @NotNull Label createTitle(String title, String related, @NotNull String... styles) {
-
-        TreeTitle label = new TreeTitle(title);
-//        label.getStyleClass().addAll("title");
+        TreeTitle label = new TreeTitle(title, "title-" + idCount++);
 
         if (related != null) {
-            label.setRelated(new TreeTitle(related));
+            List<TreeTitle> filtered =
+                    items.reversed().stream()
+                            .filter(e -> e instanceof TreeTitle)
+                            .map(el -> (TreeTitle) el)
+                            .filter(el -> el.getText().equals(related))
+                            .toList();
+            label.setRelated(filtered.getLast());
+
         }
 
        addClassesOrStyle(label, styles);
