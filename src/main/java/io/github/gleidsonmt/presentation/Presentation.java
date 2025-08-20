@@ -58,7 +58,7 @@ import java.util.Scanner;
  * It's a top and down blocks. Which blocks represents one method inside this class.
  * Ex. The method title(String title). Create a label, if I put another method
  * in sequence two titles will be created in a vbox layout.
- * More: this.title("One").title("Two").build(); creates a vbos with two titles.
+ * More: this.title("One").title("Two").build(); creates a vbox with two titles.
  * If I want a text between ones -
  * this.title("One").text("between").title("Two").build();
  * indented:
@@ -86,7 +86,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     private int idCount = 0;
 
     public Presentation() {
-//        this.context = _context;
         this.root = new StackPane();
         this.root.getStyleClass().add("presentation");
         this.body.getStyleClass().add("presentation-body");
@@ -238,8 +237,9 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     /**
      * Redirect to a browser with url.
+     *
      * @param placeholder The text to show.
-     * @param url The website to go.
+     * @param url         The website to go.
      * @return A hyperlink.
      */
     public T link(String placeholder, String url) {
@@ -279,21 +279,21 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Experimental
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public T codes(String java) {
         items.add(createTabs(java, null, null));
         return (T) this;
     }
 
     @ApiStatus.Experimental
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public T codes(String java, String fxml) {
         items.add(createTabs(java, fxml, null));
         return (T) this;
     }
 
     @ApiStatus.Experimental
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public T codes(String java, String fxml, String css) {
         items.add(createTabs(java, fxml, css));
         return (T) this;
@@ -359,7 +359,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         Hyperlink hyperlink = new Hyperlink(placeholder);
         hyperlink.setOnAction(e -> {
             try {
-                Desktop.getDesktop().browse(new URI(url.startsWith("https") ? url : "https://" + url ));
+                Desktop.getDesktop().browse(new URI(url.startsWith("https") ? url : "https://" + url));
             } catch (IOException | URISyntaxException ex) {
                 throw new RuntimeException(ex);
             }
@@ -378,7 +378,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     @ApiStatus.Internal
-    @Deprecated
+    @Deprecated(forRemoval = true)
     private Node createDemos(List<Node> nodes, String... classes) {
         FlowPane root = new FlowPane();
         root.getStyleClass().addAll(classes);
@@ -513,7 +513,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     @Deprecated
     public T demo(List<Node> nodes, String... classes) {
-        items.add(createDemos( nodes, classes));
+        items.add(createDemos(nodes, classes));
         return (T) this;
     }
 
@@ -566,12 +566,13 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     public T nodes(Node... nodes) {
         items.addAll(nodes);
-        Arrays.stream(nodes).forEach(el -> VBox.setMargin(el, new Insets(10,0,10,0)));
+        Arrays.stream(nodes).forEach(el -> VBox.setMargin(el, new Insets(10, 0, 10, 0)));
         return (T) this;
     }
 
     /**
      * Create a table with two columns.
+     *
      * @param presentations The object to get the properties
      * @return T this presentation.
      */
@@ -580,10 +581,11 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     }
 
     /**
-     *  Create a table with two columns.
-     * @param columnOne First column name.
-     * @param columTwo Second column name.
-     * @param presentations  The object to get the properties
+     * Create a table with two columns.
+     *
+     * @param columnOne     First column name.
+     * @param columTwo      Second column name.
+     * @param presentations The object to get the properties
      * @return T this presentation.
      */
     public T table(String columnOne, String columTwo, Row... presentations) {
@@ -660,6 +662,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
+    @ApiStatus.Internal
     private Node createTabs(String java, String fxml, String css) {
         TabPane tabPane = new TabPane();
 
@@ -722,7 +725,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
     private Node createTabs(List<Node> list, String java, String fxml, String css) {
 
         VBox box = new VBox();
-
         FlowPane root = new FlowPane();
 
         root.setPadding(new Insets(20));
@@ -766,8 +768,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
             box.getChildren().setAll(root);
         }
         root.setStyle("-fx-background-color: -light-gray;");
-
-
         return box;
     }
 
@@ -787,13 +787,12 @@ public class Presentation<T extends PresentationCreator> implements Presentation
                             .map(el -> (TreeTitle) el)
                             .filter(el -> el.getText().equals(related))
                             .toList();
-            label.setRelated(filtered.getLast());
+            if (!filtered.isEmpty()) label.setRelated(filtered.getLast());
+            else throw new RuntimeException("The " + label + " doesn't have a related named '" + related + "';");
 
         }
 
-       addClassesOrStyle(label, styles);
-//        if (styleClass != null) label.getStyleClass().addAll(styleClass);
-
+        addClassesOrStyle(label, styles);
         VBox.setMargin(label, new Insets(20, 0, 10, 0));
 
         return label;
@@ -842,6 +841,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return new TextFlow(text);
     }
 
+    @ApiStatus.Internal
     private @NotNull TextFlow createText(String _text, String... options) {
         Text text = new Text(_text);
         text.getStyleClass().add("text-14");
