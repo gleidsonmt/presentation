@@ -504,7 +504,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return (T) this;
     }
 
-
     @ApiStatus.Experimental
     public T demo(Node nodes, Code... codes) {
         items.add(createTabs(new Node[]{nodes}, codes));
