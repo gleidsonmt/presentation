@@ -370,11 +370,13 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     @ApiStatus.Internal
     protected BlockCode createBlockCode(CodeType codeType, String content) {
-        return new BlockCode()
-                .theme(Theme.GITHUB)
-                .codeType(codeType)
-                .content(content)
-                .build();
+        var block = new BlockCode()
+                        .theme(Theme.GITHUB)
+                        .codeType(codeType)
+                        .content(content)
+                        .build();
+        VBox.setMargin(block, new Insets(10));
+        return block;
     }
 
     @ApiStatus.Internal
@@ -594,7 +596,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         tableView.getItems().setAll(presentations);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        tableView.setMinHeight(200);
+        tableView.setMinHeight(300);
         TableColumn<Row, String> tableClass = new TableColumn<>(columnOne);
         TableColumn<Row, String> tableStyle = new TableColumn<>(columTwo);
         tableClass.setCellValueFactory(new PropertyValueFactory<>("property"));
