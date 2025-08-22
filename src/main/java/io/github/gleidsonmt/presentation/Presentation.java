@@ -831,7 +831,10 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     @ApiStatus.Internal
     private @NotNull Separator createSeparator() {
-        return new Separator(Orientation.HORIZONTAL);
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+        VBox.setMargin(separator, new Insets(20, 0,20,0));
+
+        return separator;
     }
 
     @ApiStatus.Internal
