@@ -44,6 +44,7 @@ public class HelloApplication
 
 //        Presentation presentation = new Presentation();
        SimplePresentation presentation = new SimplePresentation();
+       Presentation pres = new Presentation();
 
         VBox node = new VBox(new Button("X"));
         node.setMinHeight(200);
