@@ -23,13 +23,13 @@ import io.github.gleidsonmt.blockcode.BlockCode;
 import io.github.gleidsonmt.blockcode.CodeType;
 import io.github.gleidsonmt.blockcode.Theme;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -100,6 +100,14 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
         body.setPadding(new Insets(0, 30, 30, 30));
         body.setSpacing(10);
+
+        items.addListener((ListChangeListener<Node>) c -> {
+            if (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(item -> VBox.setVgrow(item, Priority.ALWAYS));
+                }
+            }
+        });
     }
 
     private String title = null;
@@ -712,7 +720,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
             Tab javaTab = new Tab(code.toString());
             tabPane.getTabs().add(javaTab);
 //            javaTab.setContent(createBlockCode(CodeType.JAVA, code.getContent()));
-            javaTab.setContent(createBlockCode(code.getType(), code.getContent()));
+            javaTab.setContent(createBlockCode(code.type(), code.content()));
         }
 
         box.getChildren().setAll(root, tabPane);
@@ -861,7 +869,6 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         if (items.stream().noneMatch(n -> n.getStyleClass().contains("title"))) {
             body.setPadding(new Insets(30, 30, 30, 30));
         }
-
         body.getChildren().setAll(items);
         return (T) this;
     }

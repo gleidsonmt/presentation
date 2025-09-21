@@ -8,10 +8,12 @@ import org.jetbrains.annotations.NotNull;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  28/03/2025
  */
-public class Code {
+@SuppressWarnings("unused")
+public record Code(String content, CodeType type) {
 
-    private final String content;
-    private final CodeType type;
+    @Contract(pure = true)
+    public Code {
+    }
 
     @Contract(pure = true)
     public Code(String content) {
@@ -22,23 +24,9 @@ public class Code {
         this(content, CodeType.valueOf(type.toUpperCase()));
     }
 
-    @Contract(pure = true)
-    public Code(String content, CodeType type) {
-        this.content = content;
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public CodeType getType() {
-        return type;
-    }
-
     @Override
-    public String toString() {
-        String name = getType().toString();
+    public @NotNull String toString() {
+        String name = type().toString();
         return name.charAt(0) + name.substring(1).toLowerCase();
     }
 }
