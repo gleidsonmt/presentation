@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * Create on  28/03/2025
  */
 @SuppressWarnings("unused")
-public record Code(String content, CodeType type) {
+public record Code(String name, String content, CodeType type) {
 
     @Contract(pure = true)
     public Code {
@@ -17,11 +17,21 @@ public record Code(String content, CodeType type) {
 
     @Contract(pure = true)
     public Code(String content) {
-        this(content, CodeType.JAVA);
+        this("Java", content, CodeType.JAVA);
     }
 
-    public Code(String content, @NotNull String type) {
-        this(content, CodeType.valueOf(type.toUpperCase()));
+    @Contract(pure = true)
+    public Code(String name, String content) {
+        this(name, content, CodeType.JAVA);
+    }
+
+    @Contract(pure = true)
+    public Code(String content, CodeType type) {
+        this(type.name(), content, type);
+    }
+
+    public Code(String name,String content, @NotNull String type) {
+        this(name, content, CodeType.valueOf(type.toUpperCase()));
     }
 
     @Override
