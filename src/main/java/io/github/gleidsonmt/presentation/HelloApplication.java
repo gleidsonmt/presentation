@@ -1,19 +1,15 @@
 package io.github.gleidsonmt.presentation;
 
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 //import org.scenicview.ScenicView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -44,7 +40,6 @@ public class HelloApplication
 
 //        Presentation presentation = new Presentation();
        SimplePresentation presentation = new SimplePresentation();
-       Presentation pres = new Presentation();
 
         VBox node = new VBox(new Button("X"));
         node.setMinHeight(200);
@@ -97,7 +92,7 @@ public class HelloApplication
                 .demo(new Button("Button"))
                 .demo(
                         new Button("Button"),
-                        new Code("")
+                        new Code("var x = new Button();")
                 )
                 .demo(new Button[]{
 

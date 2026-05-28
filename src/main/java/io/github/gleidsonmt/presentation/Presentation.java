@@ -68,8 +68,8 @@ import java.util.Scanner;
  * .build().
  * Create a node as like a document with sections and blocks.
  *
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  22/01/2023
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * Created on  22/01/2023
  */
 
 @ApiStatus.AvailableSince("1.0")
@@ -473,12 +473,12 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         for (Author author : authors) {
             Hyperlink hp = new Hyperlink();
 //            hp.setGraphic(new IconContainer(Icons.GITHUB));
-            hp.setText(author.getName());
+            hp.setText(author.name());
             hp.setGraphicTextGap(10);
 //            hp.setOnAction(event -> context.openLink(author.getGitUrl()));
             body.getChildren().add(hp);
 
-            if (author.getDocumentation() != null) {
+            if (author.documentation() != null) {
                 Hyperlink h = new Hyperlink();
                 h.setText(" / Documentation");
 //                h.setOnAction(event -> context.openLink(author.getDocumentation()));
