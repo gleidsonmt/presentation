@@ -37,7 +37,7 @@ public class TreeTitle extends Label {
 
     private double position;
     private TreeTitle related;
-    private String index;
+    private int index;
 
     public TreeTitle(String text, String id) {
         super(text);
@@ -76,28 +76,22 @@ public class TreeTitle extends Label {
      * Get the index in tree.
      * @return The index in tree.
      */
-    public String getIndex() {
+    public int getIndex() {
         return index;
     }
 
-    public void setIndex(String index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 
-//    @Override
-//    public String toString() {
-//        final StringBuffer sb = new StringBuffer("TreeTitle{");
-//        sb.append("\n\tid=").append(super.getId());
-//        sb.append("\n\tname=").append(getText());
-//        sb.append("\n\tposition=").append(position);
-//        sb.append("\n\trelated=").append(related);
-//        sb.append("\n\tindex='").append(index).append('\'');
-//        sb.append("\n}");
-//        return sb.toString();
-//    }
 
-    //    @Override
-//    public String toString() {
-//        return ", parent = " + getRelated();
-//    }
+    @Override
+    public String toString() {
+        return "{\"TreeTitle\":"
+               + super.toString()
+               + ", \"index\":\"" + index + "\""
+               + ", \"position\":\"" + position + "\""
+               + ", \"related\":" + related
+               + "}";
+    }
 }

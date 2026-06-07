@@ -118,29 +118,43 @@ public class Presentation<T extends PresentationCreator> implements Presentation
      * @param _title the name of the title
      * @return The Presentation.
      */
+    @Deprecated
     public T title(String _title) {
         if (title == null) title = _title;
         items.add(createTitle(_title, null, "title", "bold", "h1"));
         return (T) this;
     }
 
+    // h1 styles
+    // Options
+    // Node graphic
+    // String title
+    // String parent
+    // class fixed
+    // Font
+
     public T h1(String _title) {
-        if (title == null) title = _title;
-        items.add(createTitle(_title, null, "h1"));
-        return (T) this;
+        return createH(null, _title, null, "h1");
+    }
+
+    public T h1(Node icon, String _title) {
+        return createH(icon, _title, null, "h1");
     }
 
     public T h1(String _title, String parent) {
-        if (title == null) title = _title;
-        items.add(createTitle(_title, parent, "h1"));
-        return (T) this;
+        return createH(null, _title, parent, "h1");
     }
 
     public T h2(String _title) {
+        return createH(null, _title, null, "h2");
+    }
+
+    private T createH(Node graphic, String _title, String parent, String cssClass) {
         if (title == null) title = _title;
-        items.add(createTitle(_title, null, "h2"));
+        items.add(createTitle(graphic, _title, parent, cssClass));
         return (T) this;
     }
+
 
     public T h2(String _title, String parent) {
         if (title == null) title = _title;
@@ -787,7 +801,13 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     @ApiStatus.Internal
     private @NotNull Label createTitle(String title, String related, @NotNull String... styles) {
+        return createTitle(null, title, related, styles);
+    }
+
+    private @NotNull Label createTitle(Node graphic, String title, String related, @NotNull String... styles) {
         TreeTitle label = new TreeTitle(title, "title-" + idCount++);
+
+        if (graphic != null) label.setGraphic(graphic);
 
         if (related != null) {
             List<TreeTitle> filtered =
@@ -807,6 +827,8 @@ public class Presentation<T extends PresentationCreator> implements Presentation
         return label;
 
     }
+
+
 
     @ApiStatus.Internal
     private @NotNull Label createLabel(String text, String... styleClass) {
