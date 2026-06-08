@@ -53,20 +53,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 /**
- * Base class to create imperative presentations.
- * Used to create view without fxml and to fast way to create presentation.
- * It's a top and down blocks. Which blocks represents one method inside this class.
- * Ex. The method title(String title). Create a label, if I put another method
- * in sequence two titles will be created in a vbox layout.
- * More: this.title("One").title("Two").build(); creates a vbox with two titles.
- * If I want a text between ones -
- * this.title("One").text("between").title("Two").build();
- * indented:
- * this.title("One)
- * .text("Between")
- * .title("Two")
- * .build().
- * Create a node as like a document with sections and blocks.
+ * Use scaffolding to create a structure of presentation using java based on the desing system.
  *
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  22/01/2023
@@ -74,7 +61,7 @@ import java.util.Scanner;
 
 @ApiStatus.AvailableSince("1.0")
 @SuppressWarnings({"unchecked", "unused"})
-public class Presentation<T extends PresentationCreator> implements PresentationCreator {
+public class PresentationOld<T extends PresentationCreator> implements PresentationCreator {
 
     //Top and down root
     private final VBox body = new VBox();
@@ -85,7 +72,7 @@ public class Presentation<T extends PresentationCreator> implements Presentation
 
     private int idCount = 0;
 
-    public Presentation() {
+    public PresentationOld() {
         this.root = new StackPane();
         this.root.getStyleClass().add("presentation");
         this.body.getStyleClass().add("presentation-body");

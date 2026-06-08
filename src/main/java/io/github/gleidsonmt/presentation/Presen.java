@@ -4,21 +4,31 @@ import io.github.gleidsonmt.blockcode.BlockCode;
 import io.github.gleidsonmt.blockcode.CodeType;
 import io.github.gleidsonmt.blockcode.Theme;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebErrorEvent;
+import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -32,13 +42,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Description:
+ * Use scaffolding to create a structure of presentation using java based on the desing system.
  *
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
- * Create on 07/06/2026
+ * Created on  7 Jun 2026
  */
 public class Presen extends AbstractPresentation {
-
     //Top and down root
     private final VBox body = new VBox();
     // items for add in a tree
@@ -177,6 +186,61 @@ public class Presen extends AbstractPresentation {
     }
 
     /**
+     * Add a custom node to the presentation.
+     *
+     * @param node The node to add.
+     * @return T this presentation.
+     */
+    public Presen node(Node node) {
+        items.add(node);
+        return this;
+    }
+
+    public Presen nodes(Node... nodes) {
+        items.addAll(nodes);
+        Arrays.stream(nodes).forEach(el -> VBox.setMargin(el, new Insets(10, 0, 10, 0)));
+        return this;
+    }
+
+    /**
+     * Create a table with two columns.
+     *
+     * @param presentations The object to get the properties
+     * @return T this presentation.
+     */
+    @ApiStatus.Experimental
+    public Presen table(Row... presentations) {
+        return table("Class", "Style", presentations);
+    }
+
+    /**
+     * Create a table with two columns.
+     *
+     * @param columnOne     First column name.
+     * @param columTwo      Second column name.
+     * @param presentations The object to get the properties
+     * @return T this presentation.
+     */
+    public Presen table(String columnOne, String columTwo, Row... presentations) {
+        TableView<Row> tableView = new TableView<>();
+        tableView.getStyleClass().add("presentation-table");
+
+        tableView.getItems().setAll(presentations);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+
+        tableView.setMinHeight(300);
+        TableColumn<Row, String> tableClass = new TableColumn<>(columnOne);
+        TableColumn<Row, String> tableStyle = new TableColumn<>(columTwo);
+        tableClass.setCellValueFactory(new PropertyValueFactory<>("property"));
+        tableStyle.setCellValueFactory(new PropertyValueFactory<>("content"));
+
+        tableView.getColumns().add(tableClass);
+        tableView.getColumns().add(tableStyle);
+        items.add(tableView);
+        return this;
+    }
+
+    /**
      * Redirect to a browser with url.
      *
      * @param placeholder The text to show.
@@ -186,6 +250,59 @@ public class Presen extends AbstractPresentation {
     public Presen link(String placeholder, String url) {
         items.add(createHyperlink(placeholder, url));
         return this;
+    }
+
+    @ApiStatus.Experimental
+    public Presen youTube(String url) {
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+        // 1. Ative o JavaScript explicitamente
+        webEngine.setJavaScriptEnabled(true);
+
+        // 2. Altere o User-Agent para simular um navegador comum (Evita bloqueios)
+        String htmlString = """
+                <html>
+                <head>
+                    <meta name="referrer" content="strict-origin-when-cross-origin">
+                </head>
+                <body style="margin:0; padding:0; background-color:black;">
+                
+                    <iframe width="100%" height="100%"\s
+                            src="https://www.youtube.com/embed/6bgkdQxetl0"\s
+                            title="YouTube video player"\s
+                            frameborder="0"\s
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"\s
+                            referrerpolicy="strict-origin-when-cross-origin"\s
+                            allowfullscreen>
+                    </iframe>
+                
+                </body>
+                </html>
+                """;
+
+        // 3. Força uma URL base segura (https) para que o iframe herde um contexto de segurança válido
+//        webEngine.loadContent(htmlString, "text/html");
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+
+        webEngine.loadContent(htmlString);
+        webView.getEngine().setCreatePopupHandler(handler -> {
+            return webView.getEngine(); // Força o iframe a renderizar na mesma tela
+        });
+
+        items.add(webView);
+        return this;
+    }
+
+    // Bridge class must be public for JavaScript to reach it
+    public class Bridge {
+        public void log(String text) {
+            System.out.println("JS Log: " + text);
+        }
+
+        public void error(String text) {
+            System.err.println("JS Error: " + text);
+        }
     }
 
     @ApiStatus.Internal
@@ -327,13 +444,44 @@ public class Presen extends AbstractPresentation {
 
     public Presen demo(Node[] nodes) {
         items.add(createDemo(nodes));
-        return  this;
+        return this;
     }
 
-//    public Presen demo(Node[] nodes, Code... codes) {
-//        items.add(createTabs(nodes, codes));
-//        return this;
-//    }
+    public Presen demo(Node[] nodes, Code... codes) {
+        items.add(createTabs(nodes, codes));
+        return this;
+    }
+
+    @ApiStatus.Internal
+    private Node createTabs(Node[] nodes, Code... codes) {
+        VBox box = new VBox();
+
+        FlowPane root = new FlowPane();
+
+        root.setPadding(new Insets(20));
+        root.setVgap(10);
+        root.setHgap(10);
+        root.getChildren().setAll(nodes);
+        root.setAlignment(Pos.CENTER);
+
+        TabPane tabPane = new TabPane();
+
+        for (Code code : codes) {
+            VBox.setVgrow(tabPane, Priority.ALWAYS);
+//        tabPane.setPrefHeight(100);
+            tabPane.setMinHeight(150);
+
+            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+//
+            Tab tab = new Tab(code.toString());
+            tabPane.getTabs().add(tab);
+            tab.setContent(createBlockCode(code.type(), code.content()));
+        }
+
+        box.getChildren().setAll(root, tabPane);
+
+        return box;
+    }
 
     @ApiStatus.Internal
     private Node createDemo(Node... node) {

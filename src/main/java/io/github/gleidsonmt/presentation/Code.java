@@ -5,15 +5,11 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  28/03/2025
+ * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
+ * Created on 07/06/2026
  */
 @SuppressWarnings("unused")
 public record Code(String name, String content, CodeType type) {
-
-    @Contract(pure = true)
-    public Code {
-    }
 
     @Contract(pure = true)
     public Code(String content) {

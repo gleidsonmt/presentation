@@ -39,7 +39,7 @@ public class HelloApplication
     public void start(Stage stage) throws IOException {
 
 //        Presentation presentation = new Presentation();
-       SimplePresentation presentation = new SimplePresentation();
+       SimplePresentationOld presentation = new SimplePresentationOld();
 
         VBox node = new VBox(new Button("X"));
         node.setMinHeight(200);
