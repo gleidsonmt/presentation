@@ -20,12 +20,13 @@ tasks.withType(JavaCompile).configureEach {
 
 javafx {
   version = '23.0.2'
-  modules = ['javafx.controls', 'javafx.web', 'javafx.swing']
+  modules = ['javafx.controls', 'javafx.web', 'javafx.swing', 'javafx.fxml']
 }
 
 dependencies {
   implementation fileTree("vendor") { include "*.jar" }
-  implementation (":blockcode")
+//  implementation project(":blockcode")
+  implementation project(":blockcode")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
   implementation 'org.jetbrains:annotations:24.0.1'

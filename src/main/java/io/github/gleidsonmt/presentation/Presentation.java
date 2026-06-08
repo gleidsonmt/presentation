@@ -3,18 +3,12 @@ package io.github.gleidsonmt.presentation;
 import io.github.gleidsonmt.blockcode.BlockCode;
 import io.github.gleidsonmt.blockcode.CodeType;
 import io.github.gleidsonmt.blockcode.Theme;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -25,12 +19,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebErrorEvent;
-import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -38,7 +28,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,7 +36,7 @@ import java.util.Optional;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  7 Jun 2026
  */
-public class Presen extends AbstractPresentation {
+public class Presentation extends AbstractPresentation {
     //Top and down root
     private final VBox body = new VBox();
     // items for add in a tree
@@ -57,7 +46,7 @@ public class Presen extends AbstractPresentation {
 
     private int idCount = 0;
 
-    public Presen() {
+    public Presentation() {
         this.root = new StackPane();
         this.root.getStyleClass().add("presentation");
         this.body.getStyleClass().add("presentation-body");
@@ -91,66 +80,72 @@ public class Presen extends AbstractPresentation {
     // String parent * fixed
     // classes * fixed
 
-    public Presen h1(String _title) {
+
+    public Presentation h1(String _title) {
         return h1(null, _title);
     }
 
-    public Presen h1(Node graphic, String _title) {
+    public Presentation h1(Node graphic, String _title) {
         return createH(graphic, _title, "h1");
     }
 
-    public Presen h2(String _title) {
+    public Presentation h2(String _title) {
         return h2(null, _title);
     }
 
-    public Presen h2(Node graphic, String _title) {
+    public Presentation h2(Node graphic, String _title) {
         return createH(graphic, _title, "h2");
     }
 
-    public Presen h3(String _title) {
+    public Presentation h3(String _title) {
         return h3(null, _title);
     }
 
-    public Presen h3(Node graphic, String _title) {
+    public Presentation h3(Node graphic, String _title) {
         return createH(graphic, _title, "h3");
     }
 
-    public Presen h4(String _title) {
+    public Presentation h4(String _title) {
         return h4(null, _title);
     }
 
-    public Presen h4(Node graphic, String _title) {
+    public Presentation h4(Node graphic, String _title) {
         return createH(graphic, _title, "h4");
     }
 
-    public Presen h5(String _title) {
+    public Presentation h5(String _title) {
         return h5(null, _title);
     }
 
-    public Presen h5(Node graphic, String _title) {
+    public Presentation h5(Node graphic, String _title) {
         return createH(graphic, _title, "h5");
     }
 
-    public Presen h6(String _title) {
+    public Presentation h6(String _title) {
         return h6(null, _title);
     }
 
-    public Presen h6(Node graphic, String _title) {
+    public Presentation h6(Node graphic, String _title) {
         return createH(graphic, _title, "h6");
     }
 
 
-    public Presen text(String text) {
+    public Presentation text(String text) {
         items.add(createText(text));
         return this;
     }
 
-    public Presen image(Image image) {
+    public Presentation text(String title, String... clazzes) {
+        items.add(createText(title, clazzes));
+        return this;
+    }
+
+    public Presentation image(Image image) {
         items.add(createImage(image));
         return this;
     }
 
-    public Presen separator() {
+    public Presentation separator() {
         items.add(createSeparator());
         return this;
     }
@@ -161,7 +156,7 @@ public class Presen extends AbstractPresentation {
      * @param legend The text for legend.
      * @return This presentation.
      */
-    public Presen legend(String legend) {
+    public Presentation legend(String legend) {
         items.add(createLabel(legend, "text-12", "text-bold"));
         return this;
     }
@@ -172,12 +167,12 @@ public class Presen extends AbstractPresentation {
      * @param text The text of code.
      * @return This Presentation
      */
-    public Presen code(String text) {
+    public Presentation code(String text) {
         items.add(createBlockCode(CodeType.JAVA, text));
         return this;
     }
 
-    public Presen code(String text, String language) {
+    public Presentation code(String text, String language) {
         Optional<CodeType> optional = Arrays.stream(CodeType.values()).filter(el -> el.toString().equalsIgnoreCase(language)).findAny();
         if (optional.isPresent()) {
             items.add(createBlockCode(optional.get(), text));
@@ -191,12 +186,12 @@ public class Presen extends AbstractPresentation {
      * @param node The node to add.
      * @return T this presentation.
      */
-    public Presen node(Node node) {
+    public Presentation node(Node node) {
         items.add(node);
         return this;
     }
 
-    public Presen nodes(Node... nodes) {
+    public Presentation nodes(Node... nodes) {
         items.addAll(nodes);
         Arrays.stream(nodes).forEach(el -> VBox.setMargin(el, new Insets(10, 0, 10, 0)));
         return this;
@@ -209,7 +204,7 @@ public class Presen extends AbstractPresentation {
      * @return T this presentation.
      */
     @ApiStatus.Experimental
-    public Presen table(Row... presentations) {
+    public Presentation table(Row... presentations) {
         return table("Class", "Style", presentations);
     }
 
@@ -221,7 +216,7 @@ public class Presen extends AbstractPresentation {
      * @param presentations The object to get the properties
      * @return T this presentation.
      */
-    public Presen table(String columnOne, String columTwo, Row... presentations) {
+    public Presentation table(String columnOne, String columTwo, Row... presentations) {
         TableView<Row> tableView = new TableView<>();
         tableView.getStyleClass().add("presentation-table");
 
@@ -247,13 +242,13 @@ public class Presen extends AbstractPresentation {
      * @param url         The website to go.
      * @return A hyperlink.
      */
-    public Presen link(String placeholder, String url) {
+    public Presentation link(String placeholder, String url) {
         items.add(createHyperlink(placeholder, url));
         return this;
     }
 
     @ApiStatus.Experimental
-    public Presen youTube(String url) {
+    public Presentation youTube(String url) {
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
 
@@ -340,7 +335,7 @@ public class Presen extends AbstractPresentation {
     }
 
     @ApiStatus.Internal
-    private Presen createH(Node graphic, String _title, String clazz) {
+    private Presentation createH(Node graphic, String _title, String clazz) {
         return createHead(graphic, _title, clazz);
     }
 
@@ -359,7 +354,7 @@ public class Presen extends AbstractPresentation {
     private Optional<TreeTitle> mineParent(TreeTitle actual, int id) {
 
         var list = items.stream().filter(node -> node instanceof TreeTitle).map(node -> (TreeTitle) node);
-        var parent = list.filter(tree -> tree.getIndex() == id - 1).findAny();
+        var parent = list.filter(tree -> Integer.parseInt(tree.getId()) == id - 1).findAny();
         if (parent.isEmpty()) return Optional.empty();
         var searched = parent.get();
 
@@ -371,7 +366,7 @@ public class Presen extends AbstractPresentation {
     }
 
     @ApiStatus.Internal
-    private Presen createHead(Node graphic, String _title, String cssClasses) {
+    private Presentation createHead(Node graphic, String _title, String cssClasses) {
         if (title == null) title = _title;
         items.add(createTreeTitle(graphic, _title, cssClasses));
         return this;
@@ -389,8 +384,8 @@ public class Presen extends AbstractPresentation {
     @ApiStatus.Internal
     private @NotNull TreeTitle createTreeTitle(Node graphic, String title, String... styles) {
         var id = idCount++;
-        TreeTitle label = new TreeTitle(title, "title-" + (id));
-        label.setIndex(id);
+        TreeTitle label = new TreeTitle(title, String.valueOf(id));
+        label.setIndex(String.valueOf(id));
 
         if (graphic != null) label.setGraphic(graphic);
 
@@ -437,17 +432,17 @@ public class Presen extends AbstractPresentation {
         return separator;
     }
 
-    public Presen demo(Node node) {
+    public Presentation demo(Node node) {
         items.add(createDemo(node));
         return this;
     }
 
-    public Presen demo(Node[] nodes) {
+    public Presentation demo(Node[] nodes) {
         items.add(createDemo(nodes));
         return this;
     }
 
-    public Presen demo(Node[] nodes, Code... codes) {
+    public Presentation demo(Node[] nodes, Code... codes) {
         items.add(createTabs(nodes, codes));
         return this;
     }
@@ -510,7 +505,7 @@ public class Presen extends AbstractPresentation {
     }
 
     @Override
-    public Presen build() {
+    public Presentation build() {
         body.getChildren().setAll(items);
         return this;
     }
