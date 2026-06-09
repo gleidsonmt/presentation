@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.github.gleidsonmt'
-version '1.0.5'
+version '1.1.0'
 
 repositories {
   mavenCentral()
@@ -24,8 +24,6 @@ javafx {
 }
 
 dependencies {
-  implementation fileTree("vendor") { include "*.jar" }
-//  implementation project(":blockcode")
   implementation project(":blockcode")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

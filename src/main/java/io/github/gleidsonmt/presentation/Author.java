@@ -24,6 +24,7 @@ package io.github.gleidsonmt.presentation;
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on 28/05/2026
  */
+@Deprecated(forRemoval = true)
 public record Author(String name, String gitUrl, String documentation) {
 
     public Author(String name) {

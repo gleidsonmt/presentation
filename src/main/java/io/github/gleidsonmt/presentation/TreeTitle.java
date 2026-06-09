@@ -90,7 +90,7 @@ public class TreeTitle extends Label {
                + super.toString()
                + ", \"index\":\"" + index + "\""
                + ", \"position\":\"" + position + "\""
-               + ", \"related\":" + related
+               + ", \"related\":" + related.getIndex()
                + "}";
     }
 }
