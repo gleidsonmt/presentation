@@ -24,6 +24,7 @@ javafx {
 }
 
 dependencies {
+//  implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
   implementation project(":blockcode")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
