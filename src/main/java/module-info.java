@@ -7,7 +7,7 @@ module io.github.gleidsonmt.presentation {
     requires javafx.media;
     requires javafx.fxml;
 
-    requires io.github.gleidsonmt.blockcode;
+    requires transitive io.github.gleidsonmt.blockcode;
 
     exports io.github.gleidsonmt.presentation;
 }
