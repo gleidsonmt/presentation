@@ -1,6 +1,6 @@
 plugins {
     java
-   `java-library`
+    `java-library`
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
@@ -34,7 +34,7 @@ javafx {
 }
 
 dependencies {
-    api(project(":blockcode"))
+    api(fileTree("lib") { include("*.jar") })
     implementation("org.jetbrains:annotations:24.0.1")
 }
 
