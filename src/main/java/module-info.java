@@ -1,8 +1,13 @@
 module io.github.gleidsonmt.presentation {
     requires org.jetbrains.annotations;
     requires java.desktop;
+
+    requires javafx.web;
+    requires javafx.controls;
+    requires javafx.media;
+    requires javafx.fxml;
+
     requires io.github.gleidsonmt.blockcode;
 
-    opens io.github.gleidsonmt.presentation to javafx.fxml;
     exports io.github.gleidsonmt.presentation;
 }

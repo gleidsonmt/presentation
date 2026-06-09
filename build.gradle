@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.github.gleidsonmt'
-version '1.0.441'
+version '1.1.0'
 
 repositories {
   mavenCentral()
@@ -20,11 +20,10 @@ tasks.withType(JavaCompile).configureEach {
 
 javafx {
   version = '23.0.2'
-  modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
+  modules = ['javafx.controls', 'javafx.web', 'javafx.swing', 'javafx.fxml']
 }
 
 dependencies {
-  implementation fileTree("vendor") { include "*.jar" }
   implementation project(":blockcode")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

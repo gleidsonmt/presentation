@@ -19,10 +19,8 @@
 
 package io.github.gleidsonmt.presentation;
 
-import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -84,20 +82,13 @@ public class TreeTitle extends Label {
         this.index = index;
     }
 
-//    @Override
-//    public String toString() {
-//        final StringBuffer sb = new StringBuffer("TreeTitle{");
-//        sb.append("\n\tid=").append(super.getId());
-//        sb.append("\n\tname=").append(getText());
-//        sb.append("\n\tposition=").append(position);
-//        sb.append("\n\trelated=").append(related);
-//        sb.append("\n\tindex='").append(index).append('\'');
-//        sb.append("\n}");
-//        return sb.toString();
-//    }
-
-    //    @Override
-//    public String toString() {
-//        return ", parent = " + getRelated();
-//    }
+    @Override
+    public String toString() {
+        return "{\"TreeTitle\":"
+               + super.toString()
+               + ", \"index\":\"" + index + "\""
+               + ", \"position\":\"" + position + "\""
+               + ", \"related\":" + related.getIndex()
+               + "}";
+    }
 }
