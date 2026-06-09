@@ -1,10 +1,11 @@
 plugins {
     java
+   `java-library`
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "io.github.gleidsonmt"
-version = "1.1.0"
+version = "1.1.1"
 
 repositories {
     mavenCentral()
@@ -19,6 +20,10 @@ java {
     // modularity.inferModulePath = true
 }
 
+java {
+    modularity.inferModulePath.set(true)
+}
+
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
@@ -29,8 +34,7 @@ javafx {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
-//    implementation(project(":blockcode"))
+    api(project(":blockcode"))
     implementation("org.jetbrains:annotations:24.0.1")
 }
 
