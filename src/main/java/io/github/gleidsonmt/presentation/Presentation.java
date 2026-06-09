@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Use scaffolding to create a structure of presentation using java based on the desing system.
+ * Use scaffolding to create a structure of presentation using java based on the design system.
  *
  * @author Gleidson Neves da Silveira | <a href="mailto:gleidisonmt@gmail.com">gleidisonmt@gmail.com</a> <br>
  * Created on  7 Jun 2026
@@ -290,7 +290,8 @@ public class Presentation extends AbstractPresentation {
     }
 
     // Bridge class must be public for JavaScript to reach it
-    public class Bridge {
+    @ApiStatus.Experimental
+    private class Bridge {
         public void log(String text) {
             System.out.println("JS Log: " + text);
         }
@@ -358,7 +359,11 @@ public class Presentation extends AbstractPresentation {
         if (parent.isEmpty()) return Optional.empty();
         var searched = parent.get();
 
-        if (mineHClass(actual).equals(mineHClass(searched))) {
+        var act = Integer.parseInt(mineHClass(actual).get().replaceAll("[^0-9]", ""));
+        var val = Integer.parseInt(mineHClass(searched).get().replaceAll("[^0-9]", ""));
+
+        
+        if (act == val || act < val ) {
             return mineParent(actual, id - 1);
         } else {
             return parent;
