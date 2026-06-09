@@ -19,10 +19,8 @@
 
 package io.github.gleidsonmt.presentation;
 
-import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
