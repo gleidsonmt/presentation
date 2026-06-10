@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.gleidsonmt"
-version = "1.1.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -20,10 +20,6 @@ java {
     // modularity.inferModulePath = true
 }
 
-java {
-    modularity.inferModulePath.set(true)
-}
-
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
@@ -34,13 +30,6 @@ javafx {
 }
 
 dependencies {
-    api(fileTree("lib") { include("*.jar") })
+    api(project("blockcode"))
     implementation("org.jetbrains:annotations:24.0.1")
 }
-
-//test {
-//    useJUnitPlatform()
-//}
-
-
-
