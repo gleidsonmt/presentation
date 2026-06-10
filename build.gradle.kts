@@ -31,14 +31,5 @@ javafx {
 
 dependencies {
     api(project("blockcode"))
-//    implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
-//    implementation(project(":blockcode"))
     implementation("org.jetbrains:annotations:24.0.1")
 }
-
-//test {
-//    useJUnitPlatform()
-//}
-
-
-
