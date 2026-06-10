@@ -86,7 +86,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     public Presentation h1(Node graphic, String _title) {
-        return createH(graphic, _title, "h1");
+        return createH(graphic, _title, "h1", "bold", "-fx-graphic-text-gap: 12px;");
     }
 
     public Presentation h2(String _title) {
@@ -94,7 +94,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     public Presentation h2(Node graphic, String _title) {
-        return createH(graphic, _title, "h2");
+        return createH(graphic, _title, "h2", "bold");
     }
 
     public Presentation h3(String _title) {
@@ -102,7 +102,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     public Presentation h3(Node graphic, String _title) {
-        return createH(graphic, _title, "h3");
+        return createH(graphic, _title, "h3", "bold");
     }
 
     public Presentation h4(String _title) {
@@ -110,7 +110,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     public Presentation h4(Node graphic, String _title) {
-        return createH(graphic, _title, "h4");
+        return createH(graphic, _title, "h4", "bold");
     }
 
     public Presentation h5(String _title) {
@@ -118,7 +118,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     public Presentation h5(Node graphic, String _title) {
-        return createH(graphic, _title, "h5");
+        return createH(graphic, _title, "h5", "bold");
     }
 
     public Presentation h6(String _title) {
@@ -336,7 +336,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     @ApiStatus.Internal
-    private Presentation createH(Node graphic, String _title, String clazz) {
+    private Presentation createH(Node graphic, String _title, String... clazz) {
         return createHead(graphic, _title, clazz);
     }
 
@@ -371,7 +371,7 @@ public class Presentation extends AbstractPresentation {
     }
 
     @ApiStatus.Internal
-    private Presentation createHead(Node graphic, String _title, String cssClasses) {
+    private Presentation createHead(Node graphic, String _title, String... cssClasses) {
         if (title == null) title = _title;
         items.add(createTreeTitle(graphic, _title, cssClasses));
         return this;
