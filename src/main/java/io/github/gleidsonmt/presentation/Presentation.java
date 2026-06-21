@@ -44,7 +44,10 @@ public class Presentation extends AbstractPresentation {
     // base from nodes
     protected final StackPane root;
 
+    protected Theme theme = Theme.GITHUB;
+
     private int idCount = 0;
+
 
     public Presentation() {
         this.root = new StackPane();
@@ -80,6 +83,16 @@ public class Presentation extends AbstractPresentation {
     // String parent * fixed
     // classes * fixed
 
+    /**
+     * This presentation as clean as possible.
+     * The theme referenced here is about the block code highlight.
+     * @param theme Theme for block code highlight.
+     * @return This presentation.
+     */
+    public Presentation theme(Theme theme) {
+        this.theme = theme;
+        return this;
+    }
 
     public Presentation h1(String _title) {
         return h1(null, _title);
@@ -289,25 +302,13 @@ public class Presentation extends AbstractPresentation {
         return this;
     }
 
-    // Bridge class must be public for JavaScript to reach it
-    @ApiStatus.Experimental
-    private class Bridge {
-        public void log(String text) {
-            System.out.println("JS Log: " + text);
-        }
-
-        public void error(String text) {
-            System.err.println("JS Error: " + text);
-        }
-    }
-
     @ApiStatus.Internal
     protected BlockCode createBlockCode(CodeType codeType, String content) {
         var block = new BlockCode()
                 .theme(Theme.GITHUB)
                 .codeType(codeType)
-                .content(content)
-                .build();
+                .content(content);
+//                .build();
         VBox.setMargin(block, new Insets(10));
         return block;
     }
