@@ -27,8 +27,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Use scaffolding to create a structure of presentation using java based on the design system.
@@ -83,17 +86,6 @@ public class Presentation extends AbstractPresentation {
     // String parent * fixed
     // classes * fixed
 
-    /**
-     * This presentation as clean as possible.
-     * The theme referenced here is about the block code highlight.
-     * @param theme Theme for block code highlight.
-     * @return This presentation.
-     */
-    public Presentation theme(Theme theme) {
-        this.theme = theme;
-        return this;
-    }
-
     public Presentation h1(String _title) {
         return h1(null, _title);
     }
@@ -143,15 +135,67 @@ public class Presentation extends AbstractPresentation {
     }
 
 
+    /**
+     * Creates a text block.<br>
+     * Creates a FlowText with the text and the style.<br>
+     * You can use the ~the_class_match{yourtext}~ to highlight the text.<br>
+     * Ex. ~danger{This is a danger text}~<br>
+     * They will divide in three Texts the text "This is a danger text" will be highlighted with the class danger.<br>
+     * Of course you need to have a class in the scene that matches the class name.<br>
+     * The pattern used is .text-[custom_name] { -fx-fill : red; }  <br>
+     * Ex. <br>
+     *  <code>
+     *      .text-danger { -fx-fill : red; }
+     *  </code>j
+     *
+     *  ```
+     * @param text The text to show.
+     * @return This presentation.
+     */
     public Presentation text(String text) {
         items.add(createText(text));
         return this;
     }
 
+    /**
+     * The same as method text(String _text);
+     * Additionally, you can add classes to the text.
+     * @param title
+     * @param clazzes
+     * @return
+     */
     public Presentation text(String title, String... clazzes) {
         items.add(createText(title, clazzes));
         return this;
     }
+
+    public Presentation list(String[] _items) {
+        // 3. Adiciona dinamicamente os itens com marcadores
+        var container = new VBox();
+        for (String itemText : _items) {
+            HBox listItem = createBulletItem(itemText);
+            container.getChildren().add(listItem);
+        }
+        VBox.setMargin(container, new Insets(10, 0, 10, 0));
+        items.add(container);
+        return this;
+    }
+
+    private HBox createBulletItem(String text) {
+        // Código Unicode \u2022 representa o ponto do marcador (•)
+        Label bullet = new Label("• ");
+        bullet.setStyle("-fx-font-weight: bold; -fx-text-fill: -fx-text-base-color;");
+
+        Label content = new Label(text);
+        content.getStyleClass().add("text-14");
+        content.setWrapText(true);
+
+        HBox row = new HBox(4);
+        row.getChildren().addAll(bullet, content);
+
+        return row;
+    }
+
 
     public Presentation image(Image image) {
         items.add(createImage(image));
@@ -341,11 +385,53 @@ public class Presentation extends AbstractPresentation {
         return createHead(graphic, _title, clazz);
     }
 
+    private ArrayList<Text> addMultipleTexts(String _text, ArrayList<Text> texts) {
+        // 1. Define o padrão de busca (pode usar o regex sem o .* nas pontas aqui)
+//        Pattern pattern = Pattern.compile("\\x60{2}(.*?)\\x60{2}");
+        Pattern pattern = Pattern.compile("\\~(?:([^\\x7B]+)\\x7B)?([^\\x7D]+)\\x7D\\~");
+
+        Matcher matcher = pattern.matcher(_text);
+
+
+        // 2. Se encontrar o padrão, entra no bloco
+        if (matcher.find()) {
+            // 3. Salva o conteúdo do grupo 1 (o que está entre as crases) na variável
+//            The ~red-500{Css.DEFAULT}~ is a enum with ``Sharp`` the minimum style to start.
+
+            String captureText = matcher.group(2);
+            Text partOne = new Text(_text.substring(0, matcher.start()));
+            partOne.getStyleClass().addAll("text-14");
+            var color = matcher.group(1);
+            Text highlighted = new Text(captureText);
+            highlighted.getStyleClass().addAll("text-" + color,  "text-14");
+
+            texts.add(partOne);
+            texts.add(highlighted);
+            return addMultipleTexts(_text.substring(matcher.end()), texts);
+            // Aqui a variável 'textoCapturado' terá o valor: Css.BUTTON
+        } else {
+            Text text = new Text(_text);
+            text.getStyleClass().add("text-14");
+            texts.add(text);
+            return texts;
+        }
+//        return null;
+    }
+
     @ApiStatus.Internal
     private @NotNull TextFlow createText(String _text, String... options) {
-        Text text = new Text(_text);
-        text.getStyleClass().add("text-14");
-        TextFlow flow = new TextFlow(text);
+
+        TextFlow flow = new TextFlow();
+        Pattern pattern = Pattern.compile("\\~(?:([^\\x7B]+)\\x7B)?([^\\x7D]+)\\x7D\\~");
+        Matcher matcher = pattern.matcher(_text);
+
+        if (matcher.find()) {
+            flow.getChildren().addAll(addMultipleTexts(_text, new ArrayList<>()));
+        } else {
+            Text text = new Text(_text);
+            text.getStyleClass().add("text-14");
+            flow.getChildren().add(text);
+        }
 
         addClassesOrStyle(flow, options);
 
@@ -363,8 +449,8 @@ public class Presentation extends AbstractPresentation {
         var act = Integer.parseInt(mineHClass(actual).get().replaceAll("[^0-9]", ""));
         var val = Integer.parseInt(mineHClass(searched).get().replaceAll("[^0-9]", ""));
 
-        
-        if (act == val || act < val ) {
+
+        if (act == val || act < val) {
             return mineParent(actual, id - 1);
         } else {
             return parent;
