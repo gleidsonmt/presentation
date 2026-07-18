@@ -218,6 +218,11 @@ public class Presentation extends AbstractPresentation {
         return this;
     }
 
+    public Presentation legend(String legend, String... clazzes) {
+        items.add(createLabel(legend,  clazzes));
+        return this;
+    }
+
     /**
      * Creates a block of code with highlight.
      *
